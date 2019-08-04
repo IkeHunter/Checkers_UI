@@ -25,30 +25,31 @@ class CheckersGUI:
 
         def add_box(grid, box_var, i):  # i=board_row, j=board_col
             if grid[i] == 0:
-                grid = [box_var]
+                grid[i] = [box_var]
             else:
-                grid.append(box_var)
+                # grid.append(box_var)
+                grid[i] = [box_var]
             return grid
 
         for board_row in range(len(self.board.keys())):
-            print(board_grid)
+            print("{}: {}".format(board_row, board_grid))
             board_grid.update({board_row: 0})
             for board_col in range(len(self.board[board_row])):
                 if self.board[board_row][board_col] == 5:
-                    box = tkinter.LabelFrame(main_window, padx=5, pady=5, bg='black')\
-                        .grid(row=board_row, column=board_col)
+                    box = tkinter.Label(main_window, padx=5, pady=5, bg='black')\
+                        .grid(row=board_row, column=board_col, sticky='nsew')
                     # if board_grid[board_row].get() is None:
                     #     board_grid[board_row] = [box]
                     # else:
                     #     board_grid[board_row].append(box)
                     board_grid = add_box(board_grid, box, board_row)
                 elif self.board[board_row][board_col] == 0:
-                    box = tkinter.LabelFrame(main_window, padx=5, pady=5, bg='white')\
-                        .grid(row=board_row, column=board_col)
+                    box = tkinter.Label(main_window, padx=5, pady=5, bg='white')\
+                        .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
                 elif self.board[board_row][board_col] == 1:
-                    box = tkinter.LabelFrame(main_window, padx=5, pady=5, bg='white', text='O')\
-                        .grid(row=board_row, column=board_col)
+                    box = tkinter.Label(main_window, padx=5, pady=5, bg='white', text='O', font=("Helvetica", 30))\
+                        .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
 
     def main_loop(self, main_window):
