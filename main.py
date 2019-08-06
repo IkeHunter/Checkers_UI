@@ -3,10 +3,13 @@ import tkinter
 
 
 def main():
-    checkers = gui.CheckersGUI()
+    checkers = gui.CheckersLogic()
 
     main_window = tkinter.Tk()
     checkers.main_loop(main_window)
+
+    checkers.move_piece(5, 0, 4, 1, 2)
+
     main_window.mainloop()
 
 
