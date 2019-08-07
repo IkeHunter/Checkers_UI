@@ -56,6 +56,16 @@ class CheckersUI:
                     box = tkinter.Label(main_window, padx=0, pady=0, bg='white', text='O', font=text_opts, fg='red')\
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
+                elif board_ui[board_row][board_col] == 3:
+                    text_opts = ("Helvetica", 35, 'bold')
+                    box = tkinter.Label(main_window, padx=0, pady=0, bg='white', text='X', font=text_opts, fg='blue')\
+                        .grid(row=board_row, column=board_col, sticky='nsew')
+                    board_grid = add_box(board_grid, box, board_row)
+                elif board_ui[board_row][board_col] == 2:
+                    text_opts = ("Helvetica", 35, 'bold')
+                    box = tkinter.Label(main_window, padx=0, pady=0, bg='white', text='X', font=text_opts, fg='red')\
+                        .grid(row=board_row, column=board_col, sticky='nsew')
+                    board_grid = add_box(board_grid, box, board_row)
 
     def move_piece(self, y_from, x_from, y_to, x_to, piece):
         self.board_game = self.board_class.move_piece(y_from, x_from, y_to, x_to, piece, self.board_game)
@@ -94,7 +104,7 @@ class CheckerBoard:
         return self.board_dict
 
     @staticmethod
-    def move_piece(y_from, x_from, y_to, x_to, piece, board):  # TODO: raises exceptions
+    def move_piece(y_from, x_from, y_to, x_to, piece, board):  # TODO: move piece raises exceptions
         if piece in range(1, 5):
             if y_from in range(0, 8) and x_from in range(0, 8):
                 board[y_from][x_from] = 0
@@ -125,5 +135,33 @@ class CheckerBoard:
                 return False
             else:
                 return True
+
+
+class CheckersLogic:
+
+    def __init__(self, board):
+        self.board = board
+        self.board_dict = CheckerBoard().get_board()
+
+    def pieces_coord(self, piece):
+        """creates a dict of coordinates of pieces"""
+        if piece in range(1, 5):
+            board_dict = self.board_dict
+            pieces = dict()
+            for row in board_dict:
+                for col in board_dict[row]:
+                    if board_dict[row][col] == piece:
+                        if not board_dict:
+                            num = 0
+                        else:
+                            num = len(board_dict)
+                        item = {num: {'row': row, 'col': col}}
+                        pieces.update(item)
+        else:
+            raise Exception('While creating piece dict: The piece needs to be 1-4, got {} of type {}'
+                            .format(str(piece), type(piece)))
+
+    def available_moves(self):
+        pass
 
 

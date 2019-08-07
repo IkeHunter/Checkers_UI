@@ -1,4 +1,4 @@
-import checkers_gui as gui
+import checkers_game as gui
 import tkinter
 
 
