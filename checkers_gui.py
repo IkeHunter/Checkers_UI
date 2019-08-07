@@ -1,23 +1,23 @@
 import tkinter
 
 
-class CheckersLogic:
+class CheckersUI:
 
-    def __init__(self):
+    def __init__(self, board):
         self.board_class = CheckerBoard()
+        self.board_game = board
         self.check_board_status()
-        self.board_game = None
-
 
     def main_loop(self, main_window):
         main_window.title("Checkers")
         main_window.geometry('900x900-80-100')
         self.config(main_window)
         self.board_render(main_window)
+        return self.board_game
 
     def check_board_status(self):
-        if self.board_class.check_status(self.board_game) is False:
-            self.start_board()
+        if not self.board_game:
+            self.board_game = self.board_class.start_board()
 
     def config(self, main_window):
         board_obj = self.board_class.get_board()
@@ -25,9 +25,6 @@ class CheckersLogic:
             main_window.rowconfigure(board_row, weight=1)
             for board_col in range(len(board_obj[board_row])):
                 main_window.columnconfigure(board_col, weight=1)
-
-    def start_board(self):
-        self.board_game = self.board_class.start_board()
 
     def board_render(self, main_window):
         board_ui = self.board_game
@@ -78,7 +75,6 @@ class CheckerBoard:
             6: [5, 0, 5, 0, 5, 0, 5, 0],
             7: [0, 5, 0, 5, 0, 5, 0, 5]
         }
-        self.current_board
 
     def get_board(self):
         return self.board_dict
@@ -101,11 +97,11 @@ class CheckerBoard:
     def move_piece(y_from, x_from, y_to, x_to, piece, board):  # TODO: raises exceptions
         if piece in range(1, 5):
             if y_from in range(0, 8) and x_from in range(0, 8):
-                board[y_from, x_from] = 0
+                board[y_from][x_from] = 0
             else:
                 raise Exception('X or Y from values do not match dict, X: {}, Y: {}'.format(str(x_from), str(y_from)))
             if y_to in range(0, 8) and x_to in range(0, 8):
-                board[y_to, x_to] = piece
+                board[y_to][x_to] = piece
                 return board
             else:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(x_to), str(y_to)))

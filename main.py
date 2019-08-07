@@ -3,12 +3,12 @@ import tkinter
 
 
 def main():
-    checkers = gui.CheckersLogic()
+    checkers_board = dict()
 
+    checkers = gui.CheckersUI(checkers_board)
     main_window = tkinter.Tk()
-    checkers.main_loop(main_window)
-
     checkers.move_piece(5, 0, 4, 1, 2)
+    checkers_board = checkers.main_loop(main_window)
 
     main_window.mainloop()
 
