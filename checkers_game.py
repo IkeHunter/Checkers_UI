@@ -174,6 +174,13 @@ class CheckersLogic:
         available_coords_one = dict()
         available_coords_two = dict()
 
+        def num_iter(available_coords_dict):
+            if not available_coords_dict:
+                num_iter_var = 0
+            else:
+                num_iter_var = len(available_coords_dict)
+            return num_iter_var
+
         for i in range(1, 5):
             piece = self.iter_dict(i)
             if piece:
@@ -186,18 +193,21 @@ class CheckersLogic:
                 row_coord = pieces[i]['row']
                 col_coord = pieces[i]['col']
 
-                if not available_coords_one:
-                    num = 0
-                else:
-                    num = len(available_coords_one)
                 try:
                     row_coord_move = row_coord + 1
                     col_coord_move_one = col_coord - 1
                     col_coord_move_two = col_coord + 1
+
+                    num = num_iter(available_coords_one)
+
                     if self.board[row_coord_move][col_coord_move_one] == 0:
-                        available_coords_one.update({num: {'row': row_coord_move, 'col': col_coord_move_one}})
-                    elif self.board[row_coord_move][col_coord_move_two] == 0:
-                        available_coords_one.update({num: {'row': row_coord_move, 'col': col_coord_move_two}})
+                        available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one}})
+                    num = num_iter(available_coords_one)
+
+                    if self.board[row_coord_move][col_coord_move_two] == 0:
+                        available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                           'row': row_coord_move, 'col': col_coord_move_two}})
                 except IndexError:
                     continue
         if 2 in board_pieces:
@@ -207,19 +217,21 @@ class CheckersLogic:
                 row_coord = pieces[i]['row']
                 col_coord = pieces[i]['col']
 
-                if not available_coords_two:
-                    num = 0
-                else:
-                    num = len(available_coords_two)
-
                 try:
                     row_coord_move = row_coord - 1
                     col_coord_move_one = col_coord - 1
                     col_coord_move_two = col_coord + 1
+
+                    num = num_iter(available_coords_two)
+
                     if self.board[row_coord - 1][col_coord - 1] == 0:
-                        available_coords_two.update({num: {'row': row_coord_move, 'col': col_coord_move_one}})
+                        available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one}})
+                    num = num_iter(available_coords_two)
+
                     if self.board[row_coord - 1][col_coord + 1] == 0:
-                        available_coords_two.update({num: {'row': row_coord_move, 'col': col_coord_move_two}})
+                        available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                           'row': row_coord_move, 'col': col_coord_move_two}})
                 except IndexError:
                     continue
 
