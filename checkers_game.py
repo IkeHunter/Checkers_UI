@@ -61,7 +61,7 @@ class CheckersUI:
                     box = tkinter.Label(main_window, padx=0, pady=0, bg='white', text='X', font=text_opts, fg='blue')\
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
-                elif board_ui[board_row][board_col] == 2:
+                elif board_ui[board_row][board_col] == 4:
                     text_opts = ("Helvetica", 35, 'bold')
                     box = tkinter.Label(main_window, padx=0, pady=0, bg='white', text='X', font=text_opts, fg='red')\
                         .grid(row=board_row, column=board_col, sticky='nsew')
@@ -117,6 +117,8 @@ class CheckerBoard:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(x_to), str(y_to)))
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
+
+
 
     def print_board(self):
         for i in range(len(self.board_dict.keys())):
@@ -181,6 +183,9 @@ class CheckersLogic:
         board_pieces = []
         available_coords_one = dict()
         available_coords_two = dict()
+        available_coords_three = dict()
+        available_coords_four = dict()
+        kings_list = [available_coords_three, available_coords_four]
 
         for i in range(1, 5):
             piece = self.iter_dict(i)
@@ -191,6 +196,10 @@ class CheckersLogic:
             available_coords_one = self.available_one()
         if 2 in board_pieces:
             available_coords_two = self.available_two()
+        if 3 in board_pieces:
+            available_coords_three = self.available_king(3)
+        if 4 in board_pieces:
+            available_coords_four = self.available_king(4)
 
         if available_coords_one:
             print("available coords for one: " + str(available_coords_one))
@@ -201,6 +210,16 @@ class CheckersLogic:
             print("available coords for two: " + str(available_coords_two))
         else:
             print("No moves for two")
+
+        if available_coords_three:
+            print("available coords for three: " + str(available_coords_three))
+        else:
+            print("No moves for three")
+
+        if available_coords_four:
+            print("available coords for four: " + str(available_coords_four))
+        else:
+            print("No moves for four")
 
     def available_one(self):
         pieces = self.pieces_coord(1)
@@ -243,15 +262,45 @@ class CheckersLogic:
 
                 num = self.num_iter(available_coords_two)
 
-                if self.board[row_coord - 1][col_coord - 1] == 0:
+                if self.board[row_coord_move][col_coord_move_one] == 0:
                     available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
                                                        'row_to': row_coord_move, 'col_to': col_coord_move_one}})
                 num = self.num_iter(available_coords_two)
 
-                if self.board[row_coord - 1][col_coord + 1] == 0:
+                if self.board[row_coord_move][col_coord_move_two] == 0:
                     available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
                                                        'row': row_coord_move, 'col': col_coord_move_two}})
             except IndexError:
                 continue
 
         return available_coords_two
+
+    def available_king(self, number_piece):
+        pieces = self.pieces_coord(number_piece)
+        available_coords_king = dict()
+        for i in range(len(pieces.keys())):
+            row_coord = pieces[i]['row']
+            col_coord = pieces[i]['col']
+
+            row_coord_move_one = row_coord - 1
+            row_coord_move_two = row_coord + 1
+            col_coord_move_one = col_coord - 1
+            col_coord_move_two = col_coord + 1
+
+            row_list = [row_coord_move_one, row_coord_move_two]
+            col_list = [col_coord_move_one, col_coord_move_two]
+
+            for j in range(2):
+                for h in range(2):
+                    try:
+                        if self.board[row_list[j]][col_list[h]] == 0:
+                            num = self.num_iter(available_coords_king)
+
+                            available_coords_king.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                                'row_to': row_list[j], 'col_to': col_list[h]}})
+                    except IndexError:
+                        continue
+
+        return available_coords_king
+
+
