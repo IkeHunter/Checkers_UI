@@ -40,11 +40,16 @@ class CheckerBoard:
                 raise Exception('X or Y from values do not match dict, X: {}, Y: {}'.format(str(x_from), str(y_from)))
             if y_to in range(0, 8) and x_to in range(0, 8):
                 board[y_to][x_to] = piece
+                # board[4][3] = 4
+                # board[3][4] = 3
+
                 return board
             else:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(x_to), str(y_to)))
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
+
+
 
 
 
@@ -160,6 +165,7 @@ class CheckersLogic:
             try:
                 row_coord_move = row_coord + 1
                 row_coord_jump = row_coord + 2
+
                 col_coord_move_one = col_coord - 1
                 col_coord_move_two = col_coord + 1
                 col_coord_jump_one = col_coord - 2
@@ -204,6 +210,7 @@ class CheckersLogic:
             try:
                 row_coord_move = row_coord - 1
                 row_coord_jump = row_coord - 2
+
                 col_coord_move_one = col_coord - 1
                 col_coord_move_two = col_coord + 1
                 col_coord_jump_one = col_coord - 2
@@ -238,17 +245,33 @@ class CheckersLogic:
     def available_king(self, number_piece):
         pieces = self.pieces_coord(number_piece)
         available_coords_king = dict()
+
+        enemy_piece = []
+        if number_piece == 3:
+            enemy_piece.append(2)
+            enemy_piece.append(4)
+        elif number_piece == 4:
+            enemy_piece.append(1)
+            enemy_piece.append(3)
+
         for i in range(len(pieces.keys())):
             row_coord = pieces[i]['row']
             col_coord = pieces[i]['col']
 
             row_coord_move_one = row_coord - 1
             row_coord_move_two = row_coord + 1
+            row_coord_jump_one = row_coord - 2
+            row_coord_jump_two = row_coord + 2
+
             col_coord_move_one = col_coord - 1
             col_coord_move_two = col_coord + 1
+            col_coord_jump_one = col_coord - 2
+            col_coord_jump_two = col_coord + 2
 
             row_list = [row_coord_move_one, row_coord_move_two]
             col_list = [col_coord_move_one, col_coord_move_two]
+            row_jump_list = [row_coord_jump_one, row_coord_jump_two]
+            col_jump_list = [col_coord_jump_one, col_coord_jump_two]
 
             for j in range(2):
                 for h in range(2):
@@ -258,6 +281,15 @@ class CheckersLogic:
 
                             available_coords_king.update({num: {'row_from': row_coord, 'col_from': col_coord,
                                                                 'row_to': row_list[j], 'col_to': col_list[h]}})
+
+                        elif self.board[row_list[j]][col_list[h]] in enemy_piece \
+                                and self.board[row_jump_list[j]][col_jump_list[h]] == 0:
+                            num = self.num_iter(available_coords_king)
+
+                            available_coords_king \
+                                .update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                               'row_to': row_jump_list[j], 'col_to': col_jump_list[h]}})
+
                     except IndexError:
                         continue
 
