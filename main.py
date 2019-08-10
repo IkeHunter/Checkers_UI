@@ -8,10 +8,8 @@ def main():
 
     checkers = gui.CheckersUI(checkers_board)
     main_window = tkinter.Tk()
-    checkers.move_piece(5, 0, 4, 1, 2)
-    # checkers.move_piece(5, 2, 4, 3, 2)
-    # checkers.move_piece(5, 4, 4, 5, 2)
-    # checkers.move_piece(5, 6, 4, 7, 2)
+    checkers.move_piece(5, 2, 4, 3, 2)
+    checkers.move_piece(2, 5, 3, 4, 1)
     checkers_board = checkers.main_loop(main_window)
 
     print("the board: " + str(checkers_board))

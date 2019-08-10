@@ -159,19 +159,36 @@ class CheckersLogic:
 
             try:
                 row_coord_move = row_coord + 1
+                row_coord_jump = row_coord + 2
                 col_coord_move_one = col_coord - 1
                 col_coord_move_two = col_coord + 1
+                col_coord_jump_one = col_coord - 2
+                col_coord_jump_two = col_coord + 2
 
-                num = self.num_iter(available_coords_one)
+                # num = self.num_iter(available_coords_one)
 
                 if self.board[row_coord_move][col_coord_move_one] == 0:
+                    num = self.num_iter(available_coords_one)
                     available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
                                                        'row_to': row_coord_move, 'col_to': col_coord_move_one}})
-                num = self.num_iter(available_coords_one)
+                elif self.board[row_coord_move][col_coord_move_one] == 2 \
+                        and self.board[row_coord_jump][col_coord_jump_one] == 0:
+                    num = self.num_iter(available_coords_one)
+                    available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row_to': row_coord_jump, 'col_to': col_coord_jump_one}})
+
+                # num = self.num_iter(available_coords_one)
 
                 if self.board[row_coord_move][col_coord_move_two] == 0:
+                    num = self.num_iter(available_coords_one)
                     available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                       'row': row_coord_move, 'col': col_coord_move_two}})
+                                                       'row_to': row_coord_move, 'col_to': col_coord_move_two}})
+                elif self.board[row_coord_move][col_coord_move_one] == 2 \
+                        and self.board[row_coord_jump][col_coord_jump_two] == 0:
+                    num = self.num_iter(available_coords_one)
+                    available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row_to': row_coord_jump, 'col_to': col_coord_jump_two}})
+
             except IndexError:
                 continue
 
@@ -186,19 +203,33 @@ class CheckersLogic:
 
             try:
                 row_coord_move = row_coord - 1
+                row_coord_jump = row_coord - 2
                 col_coord_move_one = col_coord - 1
                 col_coord_move_two = col_coord + 1
+                col_coord_jump_one = col_coord - 2
+                col_coord_jump_two = col_coord + 2
 
                 num = self.num_iter(available_coords_two)
 
                 if self.board[row_coord_move][col_coord_move_one] == 0:
+                    num = self.num_iter(available_coords_two)
                     available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
                                                        'row_to': row_coord_move, 'col_to': col_coord_move_one}})
-                num = self.num_iter(available_coords_two)
+                elif self.board[row_coord_move][col_coord_move_one] == 1 \
+                        and self.board[row_coord_jump][col_coord_jump_one] == 0:
+                    num = self.num_iter(available_coords_two)
+                    available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row_to': row_coord_jump, 'col_to': col_coord_jump_one}})
 
                 if self.board[row_coord_move][col_coord_move_two] == 0:
+                    num = self.num_iter(available_coords_two)
                     available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
                                                        'row': row_coord_move, 'col': col_coord_move_two}})
+                elif self.board[row_coord_move][col_coord_move_one] == 1 \
+                        and self.board[row_coord_jump][col_coord_jump_two] == 0:
+                    num = self.num_iter(available_coords_two)
+                    available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row_to': row_coord_jump, 'col_to': col_coord_jump_two}})
             except IndexError:
                 continue
 
