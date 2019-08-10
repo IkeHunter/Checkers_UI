@@ -169,17 +169,18 @@ class CheckersLogic:
             raise Exception('While creating piece dict: The piece needs to be 1-4, got {} of type {}'
                             .format(str(piece), type(piece)))
 
+    @staticmethod
+    def num_iter(available_coords_dict):
+        if not available_coords_dict:
+            num_iter_var = 0
+        else:
+            num_iter_var = len(available_coords_dict)
+        return num_iter_var
+
     def available_moves(self):
         board_pieces = []
         available_coords_one = dict()
         available_coords_two = dict()
-
-        def num_iter(available_coords_dict):
-            if not available_coords_dict:
-                num_iter_var = 0
-            else:
-                num_iter_var = len(available_coords_dict)
-            return num_iter_var
 
         for i in range(1, 5):
             piece = self.iter_dict(i)
@@ -187,59 +188,70 @@ class CheckersLogic:
                 board_pieces.append(i)
 
         if 1 in board_pieces:
-            pieces = self.pieces_coord(1)
-            available_coords_one = dict()
-            for i in range(len(pieces.keys())):
-                row_coord = pieces[i]['row']
-                col_coord = pieces[i]['col']
-
-                try:
-                    row_coord_move = row_coord + 1
-                    col_coord_move_one = col_coord - 1
-                    col_coord_move_two = col_coord + 1
-
-                    num = num_iter(available_coords_one)
-
-                    if self.board[row_coord_move][col_coord_move_one] == 0:
-                        available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one}})
-                    num = num_iter(available_coords_one)
-
-                    if self.board[row_coord_move][col_coord_move_two] == 0:
-                        available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row': row_coord_move, 'col': col_coord_move_two}})
-                except IndexError:
-                    continue
+            available_coords_one = self.available_one()
         if 2 in board_pieces:
-            pieces = self.pieces_coord(2)
-            available_coords_two = dict()
-            for i in range(len(pieces.keys())):
-                row_coord = pieces[i]['row']
-                col_coord = pieces[i]['col']
-
-                try:
-                    row_coord_move = row_coord - 1
-                    col_coord_move_one = col_coord - 1
-                    col_coord_move_two = col_coord + 1
-
-                    num = num_iter(available_coords_two)
-
-                    if self.board[row_coord - 1][col_coord - 1] == 0:
-                        available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one}})
-                    num = num_iter(available_coords_two)
-
-                    if self.board[row_coord - 1][col_coord + 1] == 0:
-                        available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row': row_coord_move, 'col': col_coord_move_two}})
-                except IndexError:
-                    continue
+            available_coords_two = self.available_two()
 
         if available_coords_one:
             print("available coords for one: " + str(available_coords_one))
         else:
             print("No moves for one")
+
         if available_coords_two:
             print("available coords for two: " + str(available_coords_two))
         else:
             print("No moves for two")
+
+    def available_one(self):
+        pieces = self.pieces_coord(1)
+        available_coords_one = dict()
+        for i in range(len(pieces.keys())):
+            row_coord = pieces[i]['row']
+            col_coord = pieces[i]['col']
+
+            try:
+                row_coord_move = row_coord + 1
+                col_coord_move_one = col_coord - 1
+                col_coord_move_two = col_coord + 1
+
+                num = self.num_iter(available_coords_one)
+
+                if self.board[row_coord_move][col_coord_move_one] == 0:
+                    available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row_to': row_coord_move, 'col_to': col_coord_move_one}})
+                num = self.num_iter(available_coords_one)
+
+                if self.board[row_coord_move][col_coord_move_two] == 0:
+                    available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row': row_coord_move, 'col': col_coord_move_two}})
+            except IndexError:
+                continue
+
+        return available_coords_one
+
+    def available_two(self):
+        pieces = self.pieces_coord(2)
+        available_coords_two = dict()
+        for i in range(len(pieces.keys())):
+            row_coord = pieces[i]['row']
+            col_coord = pieces[i]['col']
+
+            try:
+                row_coord_move = row_coord - 1
+                col_coord_move_one = col_coord - 1
+                col_coord_move_two = col_coord + 1
+
+                num = self.num_iter(available_coords_two)
+
+                if self.board[row_coord - 1][col_coord - 1] == 0:
+                    available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row_to': row_coord_move, 'col_to': col_coord_move_one}})
+                num = self.num_iter(available_coords_two)
+
+                if self.board[row_coord - 1][col_coord + 1] == 0:
+                    available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
+                                                       'row': row_coord_move, 'col': col_coord_move_two}})
+            except IndexError:
+                continue
+
+        return available_coords_two
