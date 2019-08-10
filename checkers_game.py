@@ -72,6 +72,7 @@ class CheckersLogic:
     def __init__(self, board):
         self.board = board
         self.board_dict = CheckerBoard().get_board()
+        self.piece_status()
 
     def iter_dict(self, target):
         for row in range(len(self.board.keys())):
@@ -231,4 +232,18 @@ class CheckersLogic:
 
         return available_coords_king
 
-
+    def piece_status(self):
+        # for row in range(len(self.board.keys())):
+        #     for col in range(len(self.board[row])):
+        #         if self.board[row][col] == 1 and row == 7:
+        #             self.board[row][col] = 3
+        #         if self.board[row][col] == 2 and row == 0:
+        #             self.board[row][col] = 4
+        row_zero = self.board[0]
+        row_seven = self.board[7]
+        for col in range(len(row_seven)):
+            if row_seven[col] == 1:
+                self.board[7][col] = 3
+        for col in range(len(row_zero)):
+            if row_zero[col] == 2:
+                self.board[0][col] = 4
