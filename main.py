@@ -1,4 +1,5 @@
-import checkers_game as gui
+import checkers_gui as gui
+import checkers_game as cg
 import tkinter
 
 
@@ -16,8 +17,7 @@ def main():
     print("the board: " + str(checkers_board))
 
     main_window.mainloop()
-    logic = gui.CheckersLogic(checkers_board).available_moves()
-
+    cg.CheckersLogic(checkers_board).available_moves()
 
 
 if __name__ == '__main__':
