@@ -19,6 +19,10 @@ class CheckerBoard:
         self.check_board()
         self.game_logic = CheckersLogic(self.current_board)
         self.game_gui = gui.CheckersUI(self.current_board)
+        self.jumped_pieces = {
+            1: 0,
+            2: 0
+        }
 
     def get_board(self):
         return self.current_board
@@ -39,7 +43,8 @@ class CheckerBoard:
         if self.current_board == self.board_dict:
             self.start_board()
 
-    def move_piece(self, y_from, x_from, y_to, x_to, piece):  # TODO: move piece raises exceptions
+    def move_piece(self, y_from, x_from, y_to, x_to, piece, jumped):  # TODO: move piece raises exceptions
+        # jumped is a dict
         if piece in range(1, 5):
             if y_from in range(0, 8) and x_from in range(0, 8):
                 self.current_board[y_from][x_from] = 0
@@ -47,6 +52,8 @@ class CheckerBoard:
                 raise Exception('X or Y from values do not match dict, X: {}, Y: {}'.format(str(x_from), str(y_from)))
             if y_to in range(0, 8) and x_to in range(0, 8):
                 self.current_board[y_to][x_to] = piece
+                if jumped:
+                    self.piece_jumped(jumped)
                 # board[4][3] = 4
                 # board[3][4] = 3
 
@@ -56,9 +63,18 @@ class CheckerBoard:
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
 
+    def piece_jumped(self, piece):
+        row = piece['row']
+        col = piece['col']
+        piece_val = self.current_board[row][col]
+        if piece_val == 3:
+            piece_val = 1
+        elif piece_val == 4:
+            piece_val = 2
 
+        self.current_board[row][col] = 0
 
-
+        self.jumped_pieces[piece_val] += 1
 
     def print_board(self):
         for i in range(len(self.board_dict.keys())):
@@ -182,24 +198,30 @@ class CheckersLogic:
                     if self.board[row_coord_move][col_coord_move_one] == 0:
                         num = self.num_iter(available_coords_one)
                         available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one}})
+                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one,
+                                                           'row_jumped': None, 'col_jumped': None}})
                     elif self.board[row_coord_move][col_coord_move_one] == 2 \
                             and self.board[row_coord_jump][col_coord_jump_one] == 0:
                         if row_coord_jump >= 0 and col_coord_jump_one >= 0:
                             num = self.num_iter(available_coords_one)
                             available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_one}})
+                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_one,
+                                                               'row_jumped': row_coord_move,
+                                                               'col_jumped': col_coord_move_one}})
                 if row_coord_move >= 0 and col_coord_move_two >= 0:
                     if self.board[row_coord_move][col_coord_move_two] == 0:
                         num = self.num_iter(available_coords_one)
                         available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row_to': row_coord_move, 'col_to': col_coord_move_two}})
+                                                           'row_to': row_coord_move, 'col_to': col_coord_move_two,
+                                                           'row_jumped': None, 'col_jumped': None}})
                     elif self.board[row_coord_move][col_coord_move_one] == 2 \
                             and self.board[row_coord_jump][col_coord_jump_two] == 0:
                         if row_coord_jump >= 0 and col_coord_jump_two >= 0:
                             num = self.num_iter(available_coords_one)
                             available_coords_one.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_two}})
+                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_two,
+                                                               'row_jumped': row_coord_move,
+                                                               'col_jumped': col_coord_move_two}})
 
 
             except IndexError:
@@ -228,24 +250,30 @@ class CheckersLogic:
                     if self.board[row_coord_move][col_coord_move_one] == 0:
                         num = self.num_iter(available_coords_two)
                         available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one}})
+                                                           'row_to': row_coord_move, 'col_to': col_coord_move_one,
+                                                           'row_jumped': None, 'col_jumped': None}})
                     elif self.board[row_coord_move][col_coord_move_one] == 1 \
                             and self.board[row_coord_jump][col_coord_jump_one] == 0:
                         if row_coord_jump >= 0 and col_coord_jump_one >= 0:
                             num = self.num_iter(available_coords_two)
                             available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_one}})
+                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_one,
+                                                               'row_jumped': row_coord_move,
+                                                               'col_jumped': col_coord_move_one}})
                 if row_coord_move >= 0 and col_coord_move_two >= 0:
                     if self.board[row_coord_move][col_coord_move_two] == 0:
                         num = self.num_iter(available_coords_two)
                         available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                           'row_to': row_coord_move, 'col_to': col_coord_move_two}})
+                                                           'row_to': row_coord_move, 'col_to': col_coord_move_two,
+                                                           'row_jumped': None, 'col_jumped': None}})
                     elif self.board[row_coord_move][col_coord_move_two] == 1 \
                             and self.board[row_coord_jump][col_coord_jump_two] == 0:
                         if row_coord_jump >= 0 and col_coord_jump_two >= 0:
                             num = self.num_iter(available_coords_two)
                             available_coords_two.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_two}})
+                                                               'row_to': row_coord_jump, 'col_to': col_coord_jump_two,
+                                                               'row_jumped': row_coord_move,
+                                                               'col_jumped': col_coord_move_two}})
 
             except IndexError:
                 continue
