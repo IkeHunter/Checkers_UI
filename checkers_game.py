@@ -17,12 +17,16 @@ class CheckerBoard:
         }
         self.current_board = self.board_dict
         self.check_board()
-        self.game_logic = CheckersLogic(self.current_board)
-        self.game_gui = gui.CheckersUI(self.current_board)
         self.jumped_pieces = {
             1: 0,
             2: 0
         }
+        self.king_pieces = {
+            1: 0,
+            2: 0
+        }
+        self.game_logic = CheckersLogic(self.current_board)
+        self.game_gui = gui.CheckersUI(self.current_board, self.jumped_pieces, self.king_pieces)
 
     def get_board(self):
         return self.current_board
@@ -57,6 +61,7 @@ class CheckerBoard:
                 # board[4][3] = 4
                 # board[3][4] = 3
 
+                self.piece_king_status()
                 return self.current_board
             else:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(x_to), str(y_to)))
@@ -94,13 +99,23 @@ class CheckerBoard:
             else:
                 return True
 
+    def piece_king_status(self):
+        row_zero = self.current_board[0]
+        row_seven = self.current_board[7]
+        for col in range(len(row_seven)):
+            if row_seven[col] == 1:  # if piece 1 in col and row 7, to king
+                self.current_board[7][col] = 3
+                self.king_pieces[1] += 1
+        for col in range(len(row_zero)):
+            if row_zero[col] == 2:  # if piece 2 in col and row 0, to king
+                self.current_board[0][col] = 4
+                self.king_pieces[2] += 1
+
 
 class CheckersLogic:
 
     def __init__(self, board):
         self.board = board
-        # self.board_dict = CheckerBoard().get_board()
-        self.piece_status()
 
     def iter_dict(self, target):
         for row in range(len(self.board.keys())):
@@ -334,19 +349,3 @@ class CheckersLogic:
                             continue
 
         return available_coords_king
-
-    def piece_status(self):
-        # for row in range(len(self.board.keys())):
-        #     for col in range(len(self.board[row])):
-        #         if self.board[row][col] == 1 and row == 7:
-        #             self.board[row][col] = 3
-        #         if self.board[row][col] == 2 and row == 0:
-        #             self.board[row][col] = 4
-        row_zero = self.board[0]
-        row_seven = self.board[7]
-        for col in range(len(row_seven)):
-            if row_seven[col] == 1:
-                self.board[7][col] = 3
-        for col in range(len(row_zero)):
-            if row_zero[col] == 2:
-                self.board[0][col] = 4
