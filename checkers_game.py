@@ -111,6 +111,23 @@ class CheckerBoard:
                 self.current_board[0][col] = 4
                 self.king_pieces[2] += 1
 
+    def board_iter(self):
+        board_pieces = []
+        for i in range(1, 5):
+            piece = self.game_logic.iter_dict(i)
+            if piece:
+                board_pieces.append(i)
+        return board_pieces
+
+    def check_win(self):
+        board_pieces = self.board_iter()
+        if 1 not in board_pieces and 3 not in board_pieces:
+            return 2
+        elif 2 not in board_pieces and 4 not in board_pieces:
+            return 1
+        else:
+            return 0
+
 
 class CheckersLogic:
 
