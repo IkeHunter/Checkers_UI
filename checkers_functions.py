@@ -7,13 +7,19 @@ class CheckersBridge:
         self.game = cg.CheckerBoard()
 
     def reset(self):
-        pass
+        self.game.reset_board()
 
     def render(self):
-        pass
+        self.game.render_board()
 
-    def step(self):
-        pass
+    def step(self, move: dict, jumped):
+        self.game.move_piece(move, jumped)
 
     def has_won(self):
-        pass
+        status = self.game.check_win()
+        if status == 1:
+            ai_status = True
+        else:
+            ai_status = False
+
+        return status, ai_status

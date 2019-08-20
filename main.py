@@ -5,10 +5,6 @@ import tkinter
 
 def main():
     checkers = cg.CheckerBoard()
-    checkers_board = checkers.get_board()
-
-    checkers_gui = checkers.game_gui
-    main_window = tkinter.Tk()
 
     # checkers.move_piece(5, 2, 4, 3, 2, None)
     # checkers.move_piece(2, 5, 3, 4, 1, None)
@@ -17,11 +13,7 @@ def main():
     # checkers.move_piece(0, 5, 3, 0, 1, None)
     # checkers.move_piece(2, 5, 0, 5, 2, None)
 
-    checkers_gui.main_loop(main_window)
-
-    print("the board: " + str(checkers_board))
-
-    main_window.mainloop()
+    checkers.render_board()
     checkers.game_logic.available_moves()
 
 

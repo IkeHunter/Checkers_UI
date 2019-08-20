@@ -1,5 +1,7 @@
 import checkers_gui as gui
 
+import tkinter as tk
+
 
 class CheckerBoard:
 
@@ -28,8 +30,28 @@ class CheckerBoard:
         self.game_logic = CheckersLogic(self.current_board)
         self.game_gui = gui.CheckersUI(self.current_board, self.jumped_pieces, self.king_pieces)
 
+    # def main(self, render):
+    #     if render is True:
+    #         pass
+    #
+    # def main_content(self):
+    #
+
     def get_board(self):
         return self.current_board
+
+    def reset_board(self):
+        self.current_board = self.board_dict
+        self.start_board()
+
+        self.jumped_pieces = {
+            1: 0,
+            2: 0
+        }
+        self.king_pieces = {
+            1: 0,
+            2: 0
+        }
 
     def start_board(self):
         for i in range(len(self.current_board.keys())):
@@ -47,8 +69,10 @@ class CheckerBoard:
         if self.current_board == self.board_dict:
             self.start_board()
 
-    def move_piece(self, y_from, x_from, y_to, x_to, piece, jumped):  # TODO: move piece raises exceptions
-        # jumped is a dict
+    def move_piece(self, move: dict, jumped):  # TODO: move piece raises exceptions
+
+        y_from, x_from, y_to, x_to, piece = move
+
         if piece in range(1, 5):
             if y_from in range(0, 8) and x_from in range(0, 8):
                 self.current_board[y_from][x_from] = 0
@@ -62,7 +86,7 @@ class CheckerBoard:
                 # board[3][4] = 3
 
                 self.piece_king_status()
-                return self.current_board
+                # return self.current_board
             else:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(x_to), str(y_to)))
         else:
@@ -127,6 +151,14 @@ class CheckerBoard:
             return 1
         else:
             return 0
+
+    def render_board(self):
+        main_window = tk.Tk()
+
+        self.game_gui.main_loop(main_window)
+
+        main_window.mainloop()
+
 
 
 class CheckersLogic:
