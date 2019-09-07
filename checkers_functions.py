@@ -1,19 +1,18 @@
-import checkers_game as cg
 import numpy as np
 
 
 class CheckersBridge:
 
-    def __init__(self):
-        self.game = cg.CheckerBoard()
+    def __init__(self, game):
+        self.game = game
 
     def reset(self):
         self.game.reset_board()
 
-    def available(self):
-        moves = self.game.game_logic.available_moves()
-
-        return moves
+    # def available(self):
+    #     moves = self.game.game_logic.available_moves()
+    #
+    #     return moves
 
     def render(self):
         self.game.render_board()
@@ -39,4 +38,4 @@ class CheckersBridge:
 
 
 # board = CheckersBridge()
-# board.available()
+# print(board.available())

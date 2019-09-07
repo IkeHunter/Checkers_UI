@@ -152,6 +152,23 @@ class CheckerBoard:
 
         main_window.mainloop()
 
+    def get_moves(self, piece):
+        if piece not in range(1, 5):
+            raise Exception('Get moves failed, piece {} not in range!'.format(piece))
+        else:
+            available_moves = self.game_logic.available_moves()
+
+            if piece == 1:
+                available_moves = available_moves[1]
+            elif piece == 2:
+                available_moves = available_moves[2]
+            elif piece == 3:
+                available_moves = available_moves[3]
+            elif piece == 4:
+                available_moves = available_moves[4]
+
+            return available_moves
+
 
 class CheckersLogic:
 
