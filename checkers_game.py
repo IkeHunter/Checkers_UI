@@ -30,13 +30,6 @@ class CheckerBoard:
         self.game_logic = CheckersLogic(self.current_board)
         self.game_gui = gui.CheckersUI(self.current_board, self.jumped_pieces, self.king_pieces)
 
-    # def main(self, render):
-    #     if render is True:
-    #         pass
-    #
-    # def main_content(self):
-    #
-
     def get_board(self):
         return self.current_board
 
@@ -69,9 +62,9 @@ class CheckerBoard:
         if self.current_board == self.board_dict:
             self.start_board()
 
-    def move_piece(self, move: dict, jumped):  # TODO: move piece raises exceptions
+    def move_piece(self, move: dict, piece):  # TODO: move piece raises exceptions
 
-        y_from, x_from, y_to, x_to, piece = move
+        y_from, x_from, y_to, x_to, x_jumped, y_jumped = move
 
         if piece in range(1, 5):
             if y_from in range(0, 8) and x_from in range(0, 8):
@@ -80,8 +73,8 @@ class CheckerBoard:
                 raise Exception('X or Y from values do not match dict, X: {}, Y: {}'.format(str(x_from), str(y_from)))
             if y_to in range(0, 8) and x_to in range(0, 8):
                 self.current_board[y_to][x_to] = piece
-                if jumped:
-                    self.piece_jumped(jumped)
+                if x_jumped and y_jumped:
+                    self.piece_jumped(x_jumped, y_jumped)
                 # board[4][3] = 4
                 # board[3][4] = 3
 
@@ -92,9 +85,9 @@ class CheckerBoard:
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
 
-    def piece_jumped(self, piece):
-        row = piece['row']
-        col = piece['col']
+    def piece_jumped(self, x, y):
+        row = x
+        col = y
         piece_val = self.current_board[row][col]
         if piece_val == 3:
             piece_val = 1
@@ -160,7 +153,6 @@ class CheckerBoard:
         main_window.mainloop()
 
 
-
 class CheckersLogic:
 
     def __init__(self, board):
@@ -202,6 +194,12 @@ class CheckersLogic:
 
     def available_moves(self):
         board_pieces = []
+        available_coords_all = {
+            1: None,
+            2: None,
+            3: None,
+            4: None
+        }
         available_coords_one = dict()
         available_coords_two = dict()
         available_coords_three = dict()
@@ -222,25 +220,32 @@ class CheckersLogic:
         if 4 in board_pieces:
             available_coords_four = self.available_king(4)
 
-        if available_coords_one:
-            print("available coords for one: " + str(available_coords_one))
-        else:
-            print("No moves for one")
+        # if available_coords_one:
+        #     print("available coords for one: " + str(available_coords_one))
+        # else:
+        #     print("No moves for one")
+        #
+        # if available_coords_two:
+        #     print("available coords for two: " + str(available_coords_two))
+        # else:
+        #     print("No moves for two")
+        #
+        # if available_coords_three:
+        #     print("available coords for three: " + str(available_coords_three))
+        # else:
+        #     print("No moves for three")
+        #
+        # if available_coords_four:
+        #     print("available coords for four: " + str(available_coords_four))
+        # else:
+        #     print("No moves for four")
 
-        if available_coords_two:
-            print("available coords for two: " + str(available_coords_two))
-        else:
-            print("No moves for two")
+        available_coords_all[1] = available_coords_one
+        available_coords_all[2] = available_coords_two
+        available_coords_all[3] = available_coords_three
+        available_coords_all[4] = available_coords_four
 
-        if available_coords_three:
-            print("available coords for three: " + str(available_coords_three))
-        else:
-            print("No moves for three")
-
-        if available_coords_four:
-            print("available coords for four: " + str(available_coords_four))
-        else:
-            print("No moves for four")
+        return available_coords_all
 
     def available_one(self):
         pieces = self.pieces_coord(1)
