@@ -65,7 +65,7 @@ class CheckerBoard:
 
     def move_piece(self, move: dict, piece):  # TODO: move piece raises exceptions
 
-        # print(move)
+        print(move)
         # y_from, x_from, y_to, x_to, x_jumped, y_jumped = move
 
         row_from = move['row_from']
@@ -77,16 +77,14 @@ class CheckerBoard:
 
         if piece in range(1, 5):
             if row_from in range(0, 8) and col_from in range(0, 8):
-                if col_jumped and row_jumped:
-                    self.piece_jumped(col_jumped, row_jumped)
                 self.current_board[row_from][col_from] = 0
             else:
                 raise Exception('X or Y from values do not match dict, X: {}, Y: {}'
                                 .format(str(col_from), str(row_from)))
             if row_to in range(0, 8) and col_to in range(0, 8):
                 self.current_board[row_to][col_to] = piece
-                # if col_jumped and row_jumped:
-                #     self.piece_jumped(col_jumped, row_jumped)
+                if col_jumped and row_jumped:
+                    self.piece_jumped(col_jumped, row_jumped)
 
                 # board[4][3] = 4
                 # board[3][4] = 3
@@ -97,11 +95,9 @@ class CheckerBoard:
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
 
-    def piece_jumped(self, x, y):
-        row = x
-        col = y
-        piece_val = self.current_board[row][col]  # TODO: raises err
-        print(piece_val)
+    def piece_jumped(self, col, row):
+        piece_val = self.current_board[row][col]
+        print("piece val of jumped: " + str(piece_val))
         if piece_val == 3:
             piece_val = 1
         elif piece_val == 4:
@@ -166,7 +162,8 @@ class CheckerBoard:
         # main_window.mainloop()
 
         main_window.update()
-        time.sleep(2)
+        time.sleep(0.5)
+        main_window.destroy()
 
     def get_moves(self, piece):
         if piece not in range(1, 5):
@@ -325,8 +322,10 @@ class CheckersLogic:
                                                                'row_jumped': row_coord_move,
                                                                'col_jumped': col_coord_move_two}})
 
-
             except IndexError:
+                continue
+
+            except KeyError:
                 continue
 
         return available_coords_one
@@ -380,6 +379,9 @@ class CheckersLogic:
             except IndexError:
                 continue
 
+            except KeyError:
+                continue
+
         return available_coords_two
 
     def available_king(self, number_piece):
@@ -422,7 +424,8 @@ class CheckersLogic:
                                 num = self.num_iter(available_coords_king)
 
                                 available_coords_king.update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                                    'row_to': row_list[j], 'col_to': col_list[h]}})
+                                                                    'row_to': row_list[j], 'col_to': col_list[h],
+                                                                    'row_jumped': None, 'col_jumped': None}})
 
                             elif self.board[row_list[j]][col_list[h]] in enemy_piece \
                                     and self.board[row_jump_list[j]][col_jump_list[h]] == 0:
@@ -430,9 +433,12 @@ class CheckersLogic:
 
                                 available_coords_king \
                                     .update({num: {'row_from': row_coord, 'col_from': col_coord,
-                                                   'row_to': row_jump_list[j], 'col_to': col_jump_list[h]}})
+                                                   'row_to': row_jump_list[j], 'col_to': col_jump_list[h],
+                                                   'row_jumped': row_list[j], 'col_jumped': col_list[h]}})
 
                         except IndexError:
+                            continue
+                        except KeyError:
                             continue
 
         return available_coords_king

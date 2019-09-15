@@ -22,25 +22,27 @@ class RandomAgent:
         available_moves = [piece_moves, king_moves]
 
         if available_moves[1]:
-            play_piece = random.randint(0, 2)
+            play_piece = random.randint(0, 1)
         else:
             play_piece = 0
 
-        available_moves = available_moves[play_piece]
-        # print(available_moves)
-        # print(type(available_moves))
-        # print(len(available_moves.keys()))
+        if not available_moves[0] and not available_moves[1]:
+            self.done = True
+            chosen_move = None
+        else:
+            available_moves = available_moves[play_piece]
 
-        # print(len(available_moves.keys()))
-        print(available_moves)
-        # print(len(available_moves.keys()))
+            print(available_moves)
 
-        move_index = random.randint(0, len(available_moves.keys()) - 1)
+            move_index = random.randint(0, len(available_moves.keys()) - 1)
 
-        print("length: {} chosen: {}".format(len(available_moves.keys()), move_index))
-        chosen_move = available_moves[move_index]
+            print("length: {} chosen: {}".format(len(available_moves.keys()), move_index))
+
+            chosen_move = available_moves[move_index]
 
         _, _, self.done, _ = self.env.step(chosen_move, self.piece)
+
+        return self.done
 
 
 

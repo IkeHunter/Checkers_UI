@@ -65,7 +65,6 @@ class CheckersUI:
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
 
-        print('hello here')
         text_opts = ("Helvetica", 23)
 
         text_jumped_one = "Jumped: {}".format(str(self.jumped[2]))
@@ -85,4 +84,3 @@ class CheckersUI:
             .grid(row=6, column=8, sticky='nsew', padx=2, pady=1)
 
         board_grid.update({8: [one_label], 9: [two_label]})
-        print(board_grid)

@@ -24,12 +24,17 @@ def main():
 
     win = board.check_win()
 
-    while win == 0:
-        board.render_board()
-        random_agent_1.random_turn()
-        random_agent_2.random_turn()
-        win = board.check_win()
+    done = False
 
+    while win == 0 or done is False:
+        board.render_board()
+        board.print_board()
+        done = random_agent_1.random_turn()
+        win = board.check_win()
+        board.render_board()
+        board.print_board()
+        done = random_agent_2.random_turn()
+        win = board.check_win()
 
     print("{} wins!".format(str(win)))
 

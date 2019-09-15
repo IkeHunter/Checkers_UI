@@ -17,11 +17,12 @@ class CheckersBridge:
     def render(self):
         self.game.render_board()
 
-    def step(self, move: dict, piece):
+    def step(self, move, piece):
         obs = None
         reward = None
         info = None
-        self.game.move_piece(move, piece)
+        if move:
+            self.game.move_piece(move, piece)
 
         _, done = self.has_won()
 
