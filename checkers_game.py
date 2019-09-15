@@ -1,6 +1,7 @@
 import checkers_gui as gui
 
 import tkinter as tk
+import time
 
 
 class CheckerBoard:
@@ -64,31 +65,43 @@ class CheckerBoard:
 
     def move_piece(self, move: dict, piece):  # TODO: move piece raises exceptions
 
-        y_from, x_from, y_to, x_to, x_jumped, y_jumped = move
+        # print(move)
+        # y_from, x_from, y_to, x_to, x_jumped, y_jumped = move
+
+        row_from = move['row_from']
+        col_from = move['col_from']
+        row_to = move['row_to']
+        col_to = move['col_to']
+        row_jumped = move['row_jumped']
+        col_jumped = move['col_jumped']
 
         if piece in range(1, 5):
-            if y_from in range(0, 8) and x_from in range(0, 8):
-                self.current_board[y_from][x_from] = 0
+            if row_from in range(0, 8) and col_from in range(0, 8):
+                if col_jumped and row_jumped:
+                    self.piece_jumped(col_jumped, row_jumped)
+                self.current_board[row_from][col_from] = 0
             else:
-                raise Exception('X or Y from values do not match dict, X: {}, Y: {}'.format(str(x_from), str(y_from)))
-            if y_to in range(0, 8) and x_to in range(0, 8):
-                self.current_board[y_to][x_to] = piece
-                if x_jumped and y_jumped:
-                    self.piece_jumped(x_jumped, y_jumped)
+                raise Exception('X or Y from values do not match dict, X: {}, Y: {}'
+                                .format(str(col_from), str(row_from)))
+            if row_to in range(0, 8) and col_to in range(0, 8):
+                self.current_board[row_to][col_to] = piece
+                # if col_jumped and row_jumped:
+                #     self.piece_jumped(col_jumped, row_jumped)
+
                 # board[4][3] = 4
                 # board[3][4] = 3
 
                 self.piece_king_status()
-                # return self.current_board
             else:
-                raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(x_to), str(y_to)))
+                raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(col_to), str(row_to)))
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
 
     def piece_jumped(self, x, y):
         row = x
         col = y
-        piece_val = self.current_board[row][col]
+        piece_val = self.current_board[row][col]  # TODO: raises err
+        print(piece_val)
         if piece_val == 3:
             piece_val = 1
         elif piece_val == 4:
@@ -150,7 +163,10 @@ class CheckerBoard:
 
         self.game_gui.main_loop(main_window)
 
-        main_window.mainloop()
+        # main_window.mainloop()
+
+        main_window.update()
+        time.sleep(2)
 
     def get_moves(self, piece):
         if piece not in range(1, 5):

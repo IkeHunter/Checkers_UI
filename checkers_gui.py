@@ -65,7 +65,9 @@ class CheckersUI:
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
 
+        print('hello here')
         text_opts = ("Helvetica", 23)
+
         text_jumped_one = "Jumped: {}".format(str(self.jumped[2]))
         text_jumped_two = "Jumped: {}".format(str(self.jumped[1]))
         text_kings_one = "Kings: {}".format(str(self.kings[1]))
@@ -82,4 +84,5 @@ class CheckersUI:
         two_king = tkinter.Label(label_frame, bg='white', text=text_kings_two, font=text_opts) \
             .grid(row=6, column=8, sticky='nsew', padx=2, pady=1)
 
-        board_grid.update({8: one_label, 9: two_label})
+        board_grid.update({8: [one_label], 9: [two_label]})
+        print(board_grid)
