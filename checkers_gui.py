@@ -15,6 +15,7 @@ class CheckersUI:
         main_window.geometry('1100x1100-80-100')
         self.config(main_window)
         self.board_render(main_window)
+        # main_window.update(2000, self.board_render(main_window))
 
     def config(self, main_window):
         board_obj = self.board_game
@@ -84,3 +85,4 @@ class CheckersUI:
             .grid(row=6, column=8, sticky='nsew', padx=2, pady=1)
 
         board_grid.update({8: [one_label], 9: [two_label]})
+

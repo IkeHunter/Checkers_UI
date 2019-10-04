@@ -26,15 +26,19 @@ class RandomAgent:
         else:
             play_piece = 0
 
-        if not available_moves[0] and not available_moves[1]:
+        available_moves = available_moves[play_piece]
+
+        print(available_moves)
+
+        if len(available_moves.keys()) == 0:
             self.done = True
             chosen_move = None
         else:
-            available_moves = available_moves[play_piece]
-
-            print(available_moves)
-
-            move_index = random.randint(0, len(available_moves.keys()) - 1)
+            if len(available_moves.keys()) == 1:
+                move_index = 0
+            else:
+                print(len(available_moves.keys()))
+                move_index = random.randint(0, len(available_moves.keys()) - 1)
 
             print("length: {} chosen: {}".format(len(available_moves.keys()), move_index))
 

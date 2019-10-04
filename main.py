@@ -31,10 +31,15 @@ def main():
         board.print_board()
         done = random_agent_1.random_turn()
         win = board.check_win()
+        if done is True or win < 0:
+            break
         board.render_board()
         board.print_board()
         done = random_agent_2.random_turn()
         win = board.check_win()
+        if done is True or win < 0:
+            break
+
 
     print("{} wins!".format(str(win)))
 

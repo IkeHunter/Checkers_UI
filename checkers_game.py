@@ -162,7 +162,7 @@ class CheckerBoard:
         # main_window.mainloop()
 
         main_window.update()
-        time.sleep(0.5)
+        time.sleep(0)  # TODO: render speed
         main_window.destroy()
 
     def get_moves(self, piece):
