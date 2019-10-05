@@ -23,7 +23,10 @@ def main():
             random_agent_1.random_turn()
             main_window.after(500, game_loop_2)
         else:
-            print("{} wins!")
+            if win == 1 or win == 2:
+                print("{} wins!".format(str(win)))
+            elif win == 5:
+                print("No more moves!")
             main_window.after(3000)
 
     def game_loop_2():
@@ -34,7 +37,11 @@ def main():
             random_agent_2.random_turn()
             main_window.after(500, game_loop_1)
         else:
-            print("{} wins!")
+            if win == 1 or win == 2:
+                print("{} wins!".format(str(win)))
+            elif win == 5:
+                print("No more moves!")
+            main_window.after(3000)
 
     main_window.after(1000, game_loop_1)
     main_window.mainloop()

@@ -5,6 +5,12 @@ class CheckersBridge:
 
     def __init__(self, game):
         self.game = game
+        self.gui = game.game_gui
+
+    def sync_gui_stats(self):
+        self.gui.move_count = self.game.move_count
+        self.gui.kings = self.game.king_pieces
+        self.gui.jumps = self.game.jumped_pieces
 
     def reset(self):
         self.game.reset_board()
@@ -26,6 +32,7 @@ class CheckersBridge:
 
         _, done = self.has_won()
 
+        self.sync_gui_stats()
         return obs, reward, done, info
 
     def has_won(self):

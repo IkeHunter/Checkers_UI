@@ -28,9 +28,12 @@ class CheckerBoard:
             1: 0,
             2: 0
         }
+        self.move_count = 0
+        self.max_moves = 75
         self.main_window = main_window
         self.game_logic = CheckersLogic(self.current_board)
-        self.game_gui = gui.CheckersUI(self.current_board, self.jumped_pieces, self.king_pieces, self.main_window)
+        self.game_gui = gui.CheckersUI(
+            self.current_board, self.jumped_pieces, self.king_pieces, self.move_count, self.main_window)
 
     def get_board(self):
         return self.current_board
@@ -47,6 +50,7 @@ class CheckerBoard:
             1: 0,
             2: 0
         }
+        self.move_count = 0
 
     def start_board(self):
         for i in range(len(self.current_board.keys())):
@@ -92,8 +96,11 @@ class CheckerBoard:
                 # board[3][4] = 3
 
                 self.piece_king_status()
+                self.move_count += 1
+                print("moves: " + str(self.move_count))
             else:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(col_to), str(row_to)))
+
         else:
             raise Exception('Piece should be int 0 < x < 5, instead got {} of type {}'.format(str(piece), type(piece)))
 
@@ -153,6 +160,8 @@ class CheckerBoard:
             return 2
         elif 2 not in board_pieces and 4 not in board_pieces:
             return 1
+        elif self.move_count > self.max_moves:
+            return 5
         else:
             return 0
 

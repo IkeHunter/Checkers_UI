@@ -5,11 +5,12 @@ import checkers_game as cg
 
 class CheckersUI:
 
-    def __init__(self, board, jumped, kings, main_window):
+    def __init__(self, board, jumped, kings, move_count, main_window):
         self.board_game = board
         self.jumped = jumped
         self.kings = kings
         self.main_window = main_window
+        self.move_count = move_count
 
     def set_up(self):
         self.main_window.title("Checkers")
@@ -74,6 +75,7 @@ class CheckersUI:
         text_jumped_two = "Jumped: {}".format(str(self.jumped[1]))
         text_kings_one = "Kings: {}".format(str(self.kings[1]))
         text_kings_two = "Kings: {}".format(str(self.kings[2]))
+        move_count = "Moves: {}".format(str(self.move_count))
 
         label_frame = tkinter.LabelFrame(self.main_window, borderwidth=2, relief='solid')\
             .grid(row=0, column=8, rowspan=8, sticky='nsew')
@@ -85,6 +87,8 @@ class CheckersUI:
             .grid(row=2, column=8, sticky='nsew', padx=2, pady=1)
         two_king = tkinter.Label(label_frame, bg='white', text=text_kings_two, font=text_opts) \
             .grid(row=6, column=8, sticky='nsew', padx=2, pady=1)
+        move_label = tkinter.Label(label_frame, bg='white', text=move_count, font=text_opts)\
+            .grid(row=3, column=8, sticky='nsew', padx=2, pady=1)
 
         board_grid.update({8: [one_label], 9: [two_label]})
 
