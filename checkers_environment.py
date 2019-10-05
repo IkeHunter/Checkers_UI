@@ -22,7 +22,7 @@ class CheckersBridge:
         reward = None
         info = None
         if move:
-            self.game.move_piece(move, piece)
+            self.game.move_piece(move)
 
         _, done = self.has_won()
 
