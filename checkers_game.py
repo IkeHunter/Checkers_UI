@@ -6,7 +6,7 @@ import time
 
 class CheckerBoard:
 
-    def __init__(self):
+    def __init__(self, main_window):
 
         self.board_dict = {  # 0 = can move to space, 5 = cannot move to space
             0: [5, 0, 5, 0, 5, 0, 5, 0],
@@ -28,8 +28,9 @@ class CheckerBoard:
             1: 0,
             2: 0
         }
+        self.main_window = main_window
         self.game_logic = CheckersLogic(self.current_board)
-        self.game_gui = gui.CheckersUI(self.current_board, self.jumped_pieces, self.king_pieces)
+        self.game_gui = gui.CheckersUI(self.current_board, self.jumped_pieces, self.king_pieces, self.main_window)
 
     def get_board(self):
         return self.current_board
@@ -154,16 +155,12 @@ class CheckerBoard:
         else:
             return 0
 
+    def set_up_board(self):
+        self.game_gui.set_up()
+
     def render_board(self):
-        main_window = tk.Tk()
-
-        self.game_gui.main_loop(main_window)
-
-        # main_window.mainloop()
-
-        main_window.update()
-        time.sleep(0)  # TODO: render speed
-        main_window.destroy()
+        # self.game_gui.main_loop()
+        self.game_gui.board_render()
 
     def get_moves(self, piece):
         if piece not in range(1, 5):
