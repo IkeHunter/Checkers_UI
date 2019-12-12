@@ -1,5 +1,5 @@
 import checkers_game as cg
-import agent_random as ag
+import agent_players as ag
 import checkers_environment as ce
 
 import tkinter as tk
@@ -13,7 +13,8 @@ def main():
     board.set_up_board()
 
     random_agent_1 = ag.RandomAgent(1, board, env)
-    random_agent_2 = ag.RandomAgent(2, board, env)
+    random_agent_2 = ag.OffensiveAgent(2, board, env)
+    # random_agent_2 = ag.RandomAgent(2, board, env)
 
     def game_loop_1():
         board.render_board()
@@ -34,7 +35,7 @@ def main():
         win = board.check_win()
 
         if not win > 0:
-            random_agent_2.random_turn()
+            random_agent_2.offensive_turn()
             main_window.after(500, game_loop_1)
         else:
             if win == 1 or win == 2:

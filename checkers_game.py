@@ -70,7 +70,7 @@ class CheckerBoard:
 
     def move_piece(self, move: dict):  # TODO: move piece raises exceptions
 
-        print(move)
+        # print(move)
         # y_from, x_from, y_to, x_to, x_jumped, y_jumped = move
 
         row_from = move['row_from']
@@ -97,7 +97,7 @@ class CheckerBoard:
 
                 self.piece_king_status()
                 self.move_count += 1
-                print("moves: " + str(self.move_count))
+                # print("moves: " + str(self.move_count))
             else:
                 raise Exception('X or Y to values do not match dict, x: {}, y: {}'.format(str(col_to), str(row_to)))
 
@@ -106,7 +106,7 @@ class CheckerBoard:
 
     def piece_jumped(self, col, row):
         piece_val = self.current_board[row][col]
-        print("piece val of jumped: " + str(piece_val))
+        # print("piece val of jumped: " + str(piece_val))
         if piece_val == 3:
             piece_val = 1
         elif piece_val == 4:
