@@ -12,16 +12,19 @@ def main():
 
     board.set_up_board()
 
-    random_agent_1 = ag.RandomAgent(1, board, env)
+    # random_agent_1 = ag.RandomAgent(1, board, env)
+    random_agent_1 = ag.OffensiveAgent(1, board, env)
     random_agent_2 = ag.OffensiveAgent(2, board, env)
     # random_agent_2 = ag.RandomAgent(2, board, env)
 
     def game_loop_1():
-        board.render_board()
+        # board.render_board()
+        env.render()
         win = board.check_win()
 
         if not win > 0:
-            random_agent_1.random_turn()
+            # random_agent_1.random_turn()
+            random_agent_1.offensive_turn()
             main_window.after(500, game_loop_2)
         else:
             if win == 1 or win == 2:
