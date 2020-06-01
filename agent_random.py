@@ -20,7 +20,7 @@ env = ce.CheckersBridge(board)
 random_agent_1 = ag.RandomAgent(1, board, env)
 random_agent_2 = ag.RandomAgent(2, board, env)
 
-games_to_play = 10
+games_to_play = 2
 
 for i in range(games_to_play):
     # Reset the env
@@ -28,19 +28,19 @@ for i in range(games_to_play):
     episode_rewards = 0
     done = False
 
-    # board.print_board()
+    board.print_board()
 
     while not done:
         # env.render()  # draws frame of the game
         action = random_agent_1.random_move()  # choose action randomly
+        # if action is None:
+        #     done = True
 
         # Take a step in the env with the chosen action
-        # print(action)
+        print(action)
         obs, reward, done, info = env.step(action, random_agent_1.piece)
-        print("obs: {}, reward: {}, done: {}, info: {}".format(obs, reward, done, info))
+        # print("obs: {}, reward: {}, done: {}, info: {}".format(obs, reward, done, info))
         # episode_rewards += reward
         random_agent_2.random_turn()
 
     print(episode_rewards)  # print total rewards when done
-
-# env.close()  # close the env

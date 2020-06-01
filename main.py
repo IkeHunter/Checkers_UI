@@ -18,7 +18,7 @@ def main():
     # random_agent_2 = ag.RandomAgent(2, board, env)
 
     def game_loop_1():
-        # board.render_board()
+        board.render_board()
         env.render()
         win = board.check_win()
 
