@@ -47,7 +47,7 @@ class InstantReplay:
             self.game_gui.board_render(self.moves[self.index])
             if self.index < len(self.moves) - 1:
                 self.index += 1
-                self.main_window.after(500, iter_two())
+                self.main_window.after(500, iter_two)
 
             else:
                 print("all done")
@@ -57,7 +57,7 @@ class InstantReplay:
             self.game_gui.board_render(self.moves[self.index])
             if self.index < len(self.moves) - 1:
                 self.index += 1
-                self.main_window.after(500, iter_one())
+                self.main_window.after(500, iter_one)
 
             else:
                 print("all done")
@@ -71,6 +71,10 @@ class InstantReplay:
                 print(board[key])
             print('\n')
 
+    def render_complete_board(self):
+        self.game_gui.set_up(self.moves[0])
+        self.main_window.after(500, self.render_moves)
+        self.main_window.mainloop()
 
 
 replay = InstantReplay()
