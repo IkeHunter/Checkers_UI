@@ -27,6 +27,7 @@ for i in range(games_to_play):
     obs = env.reset()
     episode_rewards = 0
     done = False
+    move_index = 0
 
     board.print_board()
 
@@ -36,13 +37,21 @@ for i in range(games_to_play):
         # if action is None:
         #     done = True
 
-        # print(action)
+        print("action: {}".format(action))
+
         obs, reward, done, info = env.step(action, random_agent_1.piece)
 
-        status, agent_status = env.has_won()
+        move_index += 1
+        print("Move Index: {}".format(move_index))
+
+        # status, agent_status = env.has_won()
         # print("status: {}, agent_status: {}".format(status, agent_status))
 
         # episode_rewards += reward
-        random_agent_2.random_turn()
+        if not done:
+            done = random_agent_2.random_turn()
+
+            move_index += 1
+            print("Move Index: {}".format(move_index))
 
     # print(episode_rewards)  # print total rewards when done

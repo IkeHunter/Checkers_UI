@@ -1,5 +1,3 @@
-import numpy as np
-import pickle
 import json
 import copy
 
@@ -59,16 +57,24 @@ class CheckersBridge:
 
             self.write_move_file(self.game_moves)
 
-        _, done = self.has_won()
+            done = self.has_won()
+
+        else:
+            done = True
 
         self.sync_gui_stats()
         return obs, reward, done, info
 
     def has_won(self):
         status = self.game.check_win()
-        if status == 1:
-            agent_status = True
-        else:
-            agent_status = False
+        # if status == 1:
+        #     agent_status = True
+        # else:
+        #     agent_status = False
 
-        return status, agent_status
+        if not status == 0:
+            return True
+        else:
+            return False
+
+        # return status, agent_status
