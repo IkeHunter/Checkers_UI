@@ -19,6 +19,7 @@ class AgentPlayer:
     def _play_piece(self):
         piece_moves, king_moves = self.player.available_moves()
         available_moves = [piece_moves, king_moves]
+        # print("Available Moves: {}".format(available_moves))
 
         if available_moves[1]:
             play_piece = random.randint(0, 1)

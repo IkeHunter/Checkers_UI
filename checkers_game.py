@@ -29,11 +29,10 @@ class CheckerBoard:
             2: 0
         }
         self.move_count = 0
-        self.max_moves = 75
+        self.max_moves = 750
         self.main_window = main_window
         self.game_logic = CheckersLogic(self.current_board)
-        self.game_gui = gui.CheckersUI(
-            self.current_board, self.jumped_pieces, self.king_pieces, self.move_count, self.main_window)
+        self.game_gui = gui.CheckersUI(self.main_window)
 
     def get_board(self):
         return self.current_board
@@ -166,11 +165,11 @@ class CheckerBoard:
             return 0
 
     def set_up_board(self):
-        self.game_gui.set_up()
+        self.game_gui.set_up(self.current_board)
 
     def render_board(self):
         # self.game_gui.main_loop()
-        self.game_gui.board_render()
+        self.game_gui.board_render_verbose(self.current_board, self.jumped_pieces, self.king_pieces, self.move_count)
 
     def get_moves(self, piece):
         if piece not in range(1, 5):

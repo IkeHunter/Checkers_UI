@@ -19,7 +19,7 @@ def main():
 
     def game_loop_1():
         board.render_board()
-        env.render()
+        # env.render()
         win = board.check_win()
 
         if not win > 0:
