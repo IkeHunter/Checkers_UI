@@ -165,7 +165,7 @@ class CheckerBoard:
             return 0
 
     def set_up_board(self):
-        self.game_gui.set_up(self.current_board)
+        self.game_gui.set_up(self.current_board, self.main_window)
 
     def render_board(self):
         # self.game_gui.main_loop()
@@ -185,6 +185,11 @@ class CheckerBoard:
                 available_moves = available_moves[3]
             elif piece == 4:
                 available_moves = available_moves[4]
+
+            for i in available_moves:
+                if (8 > available_moves[i]['row_from'] < 0) or (8 > available_moves[i]['row_to'] < 0) \
+                        or (8 > available_moves[i]['col_from'] < 0) or (8 > available_moves[i]['col_to'] < 0):
+                    raise Exception("Move Error: {}".format(available_moves[i]))
 
             return available_moves
 
@@ -280,6 +285,8 @@ class CheckersLogic:
         available_coords_all[2] = available_coords_two
         available_coords_all[3] = available_coords_three
         available_coords_all[4] = available_coords_four
+
+        print("Available 4: {}".format(available_coords_four))
 
         return available_coords_all
 
@@ -410,6 +417,8 @@ class CheckersLogic:
             enemy_piece.append(1)
             enemy_piece.append(3)
 
+        print("({}) :: {}".format(number_piece, pieces))
+
         for i in range(len(pieces.keys())):
             row_coord = pieces[i]['row']
             col_coord = pieces[i]['col']
@@ -429,12 +438,11 @@ class CheckersLogic:
             row_jump_list = [row_coord_jump_one, row_coord_jump_two]
             col_jump_list = [col_coord_jump_one, col_coord_jump_two]
 
-            if row_coord_move_one >= 0 and row_coord_move_two >= 0 and row_coord_jump_one >= 0 and row_coord_move_two >= 0 and col_coord_move_one >= 0 and col_coord_move_two >= 0 \
-                    and col_coord_jump_one >= 0 and col_coord_jump_two >= 0:
-                for j in range(2):
-                    for h in range(2):
-                        try:
-                            if self.board[row_list[j]][col_list[h]] == 0:
+            for j in range(2):
+                for h in range(2):
+                    try:
+                        if self.board[row_list[j]][col_list[h]] == 0:
+                            if (8 > row_list[j] > 0) and (8 > col_list[h] > 0):
                                 num = self.num_iter(available_coords_king)
 
                                 available_coords_king.update({num: {'row_from': row_coord, 'col_from': col_coord,
@@ -442,8 +450,9 @@ class CheckersLogic:
                                                                     'row_jumped': None, 'col_jumped': None,
                                                                     'piece': number_piece}})
 
-                            elif self.board[row_list[j]][col_list[h]] in enemy_piece \
-                                    and self.board[row_jump_list[j]][col_jump_list[h]] == 0:
+                        elif self.board[row_list[j]][col_list[h]] in enemy_piece \
+                                and self.board[row_jump_list[j]][col_jump_list[h]] == 0:
+                            if (8 > row_jump_list[j] > 0) and (8 > col_jump_list[h] > 0):
                                 num = self.num_iter(available_coords_king)
 
                                 available_coords_king \
@@ -452,9 +461,9 @@ class CheckersLogic:
                                                    'row_jumped': row_list[j], 'col_jumped': col_list[h],
                                                    'piece': number_piece}})
 
-                        except IndexError:
-                            continue
-                        except KeyError:
-                            continue
+                    except IndexError:
+                        continue
+                    except KeyError:
+                        continue
 
         return available_coords_king

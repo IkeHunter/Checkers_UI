@@ -5,27 +5,31 @@ import checkers_game as cg
 
 class CheckersUI:
 
-    def __init__(self, main_window):
+    def __init__(self, root_window):
         # self.board_game = board
         # self.jumped = jumped
         # self.kings = kings
         # self.move_count = move_count
-        self.main_window = main_window
+        # self.main_window = main_frame
+        self.main_window = root_window
 
-    def set_up(self, board_game):
-        self.main_window.title("Checkers")
-        self.main_window.geometry('1100x1100-80-100')
-        self.config(board_game)
+    def set_up(self, board_game, root):
+        root.title("Checkers")
+        root.geometry('1100x1100-80-100')
+        # frame.grid(sticky='nsew')
+        self.config(board_game, root)
 
     # def main_loop(self):
     #     self.main_window.after(2000, self.board_render)
 
-    def config(self, board_game):
+    def config(self, board_game, root):
 
         try:
             board_obj = board_game
             for board_row in range(len(board_obj.keys())):
-                self.main_window.rowconfigure(board_row, weight=1)
+                root.rowconfigure(board_row, weight=1)
+                # frame.rowconfigure(board_row, weight=1)
+
                 # print("range(len(board_obj[board_row] :: {} \nboard_row :: {} \nboard_obj[board_row] :: {}"
                 #       .format(len(board_obj[board_row]), board_row, board_obj[board_row]))
 
@@ -33,19 +37,27 @@ class CheckersUI:
                 #       .format(404, board_row, board_obj[str(board_row)]))
 
                 for board_col in range(len(board_obj[board_row])):
-                    self.main_window.columnconfigure(board_col, weight=1)
-            self.main_window.columnconfigure(8, weight=1)  # TODO: change col config to 7 for board_render() only
+                    root.columnconfigure(board_col, weight=1)
+                    # frame.columnconfigure(board_col, weight=1)
+
+            root.columnconfigure(8, weight=1)
+            # frame.columnconfigure(8, weight=1)  # TODO: change col config to 7 for board_render() only
 
         except KeyError:
             board_obj = board_game
             for board_row in range(len(board_obj.keys())):
-                self.main_window.rowconfigure(int(board_row), weight=1)
+                root.rowconfigure(int(board_row), weight=1)
+                # frame.rowconfigure(int(board_row), weight=1)
 
                 for board_col in range(len(board_obj[str(board_row)])):
-                    self.main_window.columnconfigure(board_col, weight=1)
-            self.main_window.columnconfigure(8, weight=1)  # TODO: change col config to 7 for board_render() only
+                    root.columnconfigure(board_col, weight=1)
+                    # frame.columnconfigure(board_col, weight=1)
+            root.columnconfigure(8, weight=1)
+            # frame.columnconfigure(8, weight=1)  # TODO: change col config to 7 for board_render() only
 
-    def board_render(self, board_ui):
+        return root
+
+    def board_render(self, board_ui, frame):
         # board_ui = self.board_game
         board_grid = dict()
 
@@ -54,38 +66,39 @@ class CheckersUI:
 
             return grid
 
+
         for board_row in board_ui.keys():
             board_grid.update({board_row: 0})
             for board_col in range(len(board_ui[board_row])):
                 if board_ui[board_row][board_col] == 5:
-                    box = tkinter.Label(self.main_window, padx=12, pady=12, bg='black', text=" ") \
+                    box = tkinter.Label(frame, padx=12, pady=12, bg='black', text=" ") \
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
                 elif board_ui[board_row][board_col] == 0:
-                    box = tkinter.Label(self.main_window, padx=12, pady=12, bg='white', text=" ") \
+                    box = tkinter.Label(frame, padx=12, pady=12, bg='white', text=" ") \
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
                 elif board_ui[board_row][board_col] == 1:
                     text_opts = ("Helvetica", 35, 'bold')
-                    box = tkinter.Label(self.main_window, padx=0, pady=0, bg='white', text='O', font=text_opts,
+                    box = tkinter.Label(frame, padx=0, pady=0, bg='white', text='O', font=text_opts,
                                         fg='blue') \
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
                 elif board_ui[board_row][board_col] == 2:
                     text_opts = ("Helvetica", 35, 'bold')
-                    box = tkinter.Label(self.main_window, padx=0, pady=0, bg='white', text='O', font=text_opts,
+                    box = tkinter.Label(frame, padx=0, pady=0, bg='white', text='O', font=text_opts,
                                         fg='red') \
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
                 elif board_ui[board_row][board_col] == 3:
                     text_opts = ("Helvetica", 35, 'bold')
-                    box = tkinter.Label(self.main_window, padx=0, pady=0, bg='white', text='X', font=text_opts,
+                    box = tkinter.Label(frame, padx=0, pady=0, bg='white', text='X', font=text_opts,
                                         fg='blue') \
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
                 elif board_ui[board_row][board_col] == 4:
                     text_opts = ("Helvetica", 35, 'bold')
-                    box = tkinter.Label(self.main_window, padx=0, pady=0, bg='white', text='X', font=text_opts,
+                    box = tkinter.Label(frame, padx=0, pady=0, bg='white', text='X', font=text_opts,
                                         fg='red') \
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)

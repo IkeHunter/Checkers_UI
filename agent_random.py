@@ -3,7 +3,7 @@ import agent_players as ag
 import checkers_environment as ce
 
 import tkinter as tk
-
+import os
 
 """
 - env should be set up
@@ -21,6 +21,8 @@ random_agent_1 = ag.RandomAgent(1, board, env)
 random_agent_2 = ag.RandomAgent(2, board, env)
 
 games_to_play = 1
+
+os.remove('moves')
 
 for i in range(games_to_play):
     # Reset the env
