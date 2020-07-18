@@ -67,19 +67,21 @@ class RandomAgent(AgentPlayer):
         """Handles moving the piece"""
 
         available_moves = self._play_piece()
-        # print("available moves: " + str(available_moves))  # TODO: print
 
-        chosen_move = self.chose_random_turn(available_moves)
+        if available_moves:
 
-        _, _, self.done, _ = self.env.step(chosen_move, self.piece)
+            chosen_move = self.chose_random_turn(available_moves)
 
-        return self.done
+            _, _, self.done, _ = self.env.step(chosen_move, self.piece)
+
+            return self.done
+        else:
+            return True
 
     def random_move(self):
         """Returns random moves to be passed into env"""
 
         available_moves = self._play_piece()
-        print("\navailable moves: {}\n".format(available_moves))  # TODO: print
 
         if available_moves:
             chosen_move = self.chose_random_turn(available_moves)
@@ -100,24 +102,26 @@ class OffensiveAgent(AgentPlayer):
         available_moves = self._play_piece()
 
         offensive_moves = []
+        if available_moves:
+            for i in available_moves:
+                if available_moves[i]['row_jumped']:
+                    offensive_moves.append(available_moves[i])
 
-        for i in available_moves:
-            if available_moves[i]['row_jumped']:
-                offensive_moves.append(available_moves[i])
-
-        if not offensive_moves:
-            chosen_move = self.chose_random_turn(available_moves)
-        else:
-            if len(offensive_moves) == 1:
-                move_index = 0
+            if not offensive_moves:
+                chosen_move = self.chose_random_turn(available_moves)
             else:
-                move_index = random.randint(0, len(offensive_moves) - 1)
+                if len(offensive_moves) == 1:
+                    move_index = 0
+                else:
+                    move_index = random.randint(0, len(offensive_moves) - 1)
 
-            chosen_move = offensive_moves[move_index]
+                chosen_move = offensive_moves[move_index]
 
-        _, _, self.done, _ = self.env.step(chosen_move, self.piece)
+            _, _, self.done, _ = self.env.step(chosen_move, self.piece)
 
-        return self.done
+            return self.done
+        else:
+            return True
 
     def offensive_move(self):
         """Returns random moves to be passed into env"""

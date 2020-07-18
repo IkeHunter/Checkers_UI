@@ -35,9 +35,9 @@ class InstantReplay:
 
         frame = tk.Frame(self.main_window, bg='systemTransparent')
         frame.grid(row=0, column=0, sticky='nsew', columnspan=8, rowspan=8, padx=0)
-        frame = self.game_gui.config(self.moves[0], frame)
+        frame = self.game_gui.config(self.moves[0], frame, False)
 
-        self.game_gui.board_render(self.moves[self.index], frame)
+        self.game_gui.board_render(self.moves[self.index], frame, self.index)
 
         if self.index < len(self.moves) - 1:
             self.index += 1

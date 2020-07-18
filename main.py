@@ -12,18 +12,18 @@ def main():
 
     board.set_up_board()
 
-    # random_agent_1 = ag.RandomAgent(1, board, env)
     random_agent_1 = ag.OffensiveAgent(1, board, env)
     random_agent_2 = ag.OffensiveAgent(2, board, env)
-    # random_agent_2 = ag.RandomAgent(2, board, env)
 
     def game_loop_1():
-        board.render_board()
-        # env.render()
+        frame = tk.Frame(main_window, bg='systemTransparent')
+        frame.grid(row=0, column=0, sticky='nsew', columnspan=8, rowspan=8)
+        frame = board.game_gui.config(board.current_board, frame, False)
+
+        board.render_board(frame)
         win = board.check_win()
 
         if not win > 0:
-            # random_agent_1.random_turn()
             random_agent_1.offensive_turn()
             main_window.after(500, game_loop_2)
         else:
@@ -34,7 +34,11 @@ def main():
             main_window.after(3000)
 
     def game_loop_2():
-        board.render_board()
+        frame = tk.Frame(main_window, bg='systemTransparent')
+        frame.grid(row=0, column=0, sticky='nsew', columnspan=8, rowspan=8)
+        frame = board.game_gui.config(board.current_board, frame, False)
+
+        board.render_board(frame)
         win = board.check_win()
 
         if not win > 0:
