@@ -107,15 +107,24 @@ class CheckersUI:
                         .grid(row=board_row, column=board_col, sticky='nsew')
                     board_grid = add_box(board_grid, box, board_row)
 
-        text_opts = ("Helvetica", 20)
+        label_opts = ("Helvetica", 23)
+        int_opts = ("Helvetica", 30)
 
         label_frame = tkinter.LabelFrame(frame, borderwidth=2, relief='solid')
         label_frame.grid(row=0, column=8, rowspan=8, sticky='nsew')
 
-        move_index = "Move Index \n{}".format(str(move_index))
+        game_index = "{}/{}".format(str(1), str(1))
+        move_index = "{}".format(str(move_index))
 
-        move_index_label = tkinter.Label(frame, bg='white', text=move_index, font=text_opts) \
-            .grid(row=3, column=8, sticky='nsew', padx=2, pady=1)
+        game_index_label = tkinter.Label(frame, bg='white', text="Game Index", font=label_opts) \
+            .grid(row=2, column=8, sticky='sew', padx=12, pady=1)
+        game_index_int = tkinter.Label(frame, bg='white', text=game_index, font=int_opts) \
+            .grid(row=3, column=8, sticky='new', padx=12, pady=1)
+
+        move_index_label = tkinter.Label(frame, bg='white', text="Move Index", font=label_opts) \
+            .grid(row=4, column=8, sticky='sew', padx=12, pady=1)
+        move_index_int = tkinter.Label(frame, bg='white', text=move_index, font=int_opts) \
+            .grid(row=5, column=8, sticky='new', padx=12, pady=1)
 
 
     def board_render_verbose(self, frame, board_ui, jumped, kings, move_count):
@@ -175,14 +184,14 @@ class CheckersUI:
         label_frame.grid(row=0, column=8, rowspan=8, sticky='nsew')
 
         one_label = tkinter.Label(frame, bg='white', text=text_jumped_one, font=text_opts) \
-            .grid(row=1, column=8, sticky='nsew', padx=2, pady=1)
+            .grid(row=1, column=8, sticky='nsew', padx=12, pady=1)
         two_label = tkinter.Label(frame, bg='white', text=text_jumped_two, font=text_opts) \
-            .grid(row=5, column=8, sticky='nsew', padx=2, pady=1)
+            .grid(row=5, column=8, sticky='nsew', padx=12, pady=1)
         one_king = tkinter.Label(frame, bg='white', text=text_kings_one, font=text_opts) \
-            .grid(row=2, column=8, sticky='nsew', padx=2, pady=1)
+            .grid(row=2, column=8, sticky='nsew', padx=12, pady=1)
         two_king = tkinter.Label(frame, bg='white', text=text_kings_two, font=text_opts) \
-            .grid(row=6, column=8, sticky='nsew', padx=2, pady=1)
+            .grid(row=6, column=8, sticky='nsew', padx=12, pady=1)
         move_label = tkinter.Label(frame, bg='white', text=move_count, font=text_opts) \
-            .grid(row=3, column=8, sticky='nsew', padx=2, pady=1)
+            .grid(row=3, column=8, sticky='nsew', padx=12, pady=1)
 
         board_grid.update({8: [one_label], 9: [two_label]})

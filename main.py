@@ -25,7 +25,7 @@ def main():
 
         if not win > 0:
             random_agent_1.offensive_turn()
-            main_window.after(500, game_loop_2)
+            main_window.after(250, game_loop_2)
         else:
             if win == 1 or win == 2:
                 print("{} wins!".format(str(win)))
@@ -43,7 +43,7 @@ def main():
 
         if not win > 0:
             random_agent_2.offensive_turn()
-            main_window.after(500, game_loop_1)
+            main_window.after(250, game_loop_1)
         else:
             if win == 1 or win == 2:
                 print("{} wins!".format(str(win)))

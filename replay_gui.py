@@ -62,3 +62,5 @@ class InstantReplay:
 
 replay = InstantReplay()
 replay.read_move_file()
+replay.render_complete_board()
+
