@@ -1,5 +1,6 @@
 import json
 import copy
+import os
 
 
 class CheckersBridge:
@@ -8,15 +9,17 @@ class CheckersBridge:
         self.game = game
         self.gui = game.game_gui
         self.game_moves = []
+        self.game_dict = {}
 
     @staticmethod
-    def write_move_file(move_dict):
+    def write_move_file(move_dict, game_index):
+        game_dict = {}
+        with open('moves.json', 'r') as move_file:
+            game_dict = json.load(move_file)
 
-        def file_write():
-            with open('moves', 'w') as move_file:
-                json.dump(move_dict, move_file)
-
-        file_write()
+        with open('moves.json', 'w') as move_file:
+            game_dict[game_index] = move_dict
+            json.dump(game_dict, move_file)
 
     def sync_gui_stats(self):
         self.gui.move_count = self.game.move_count
@@ -36,7 +39,7 @@ class CheckersBridge:
     def render(self):
         self.game.render_board()
 
-    def step(self, move, piece):
+    def step(self, move, piece, game_index=0):
         obs = None
         reward = None
         info = None
@@ -55,7 +58,7 @@ class CheckersBridge:
                 print(self.game.current_board[key])
             print("\n")
 
-            self.write_move_file(self.game_moves)
+            self.write_move_file(self.game_moves, game_index)
 
             done = self.has_won()
 

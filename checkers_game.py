@@ -1,5 +1,7 @@
 import checkers_gui as gui
 
+import copy
+
 import tkinter as tk
 import time
 
@@ -38,6 +40,7 @@ class CheckerBoard:
         return self.current_board
 
     def reset_board(self):
+        # self.current_board = copy.deepcopy(self.board_dict)
         self.current_board = self.board_dict
         self.start_board()
 

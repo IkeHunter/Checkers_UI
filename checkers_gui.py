@@ -62,7 +62,7 @@ class CheckersUI:
 
         return root
 
-    def board_render(self, board_ui, frame, move_index):
+    def board_render(self, board_ui, frame, move_index, game_index, max_games):
         # board_ui = self.board_game
         board_grid = dict()
 
@@ -113,7 +113,7 @@ class CheckersUI:
         label_frame = tkinter.LabelFrame(frame, borderwidth=2, relief='solid')
         label_frame.grid(row=0, column=8, rowspan=8, sticky='nsew')
 
-        game_index = "{}/{}".format(str(1), str(1))
+        game_index = "{}/{}".format(str(game_index), str(max_games))
         move_index = "{}".format(str(move_index))
 
         game_index_label = tkinter.Label(frame, bg='white', text="Game Index", font=label_opts) \
