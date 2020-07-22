@@ -5,13 +5,14 @@ import checkers_game as cg
 
 class CheckersUI:
 
-    def __init__(self, root_window):
+    def __init__(self):
         # self.board_game = board
         # self.jumped = jumped
         # self.kings = kings
         # self.move_count = move_count
         # self.main_window = main_frame
-        self.main_window = root_window
+        # self.main_window = root_window
+        pass
 
     def set_up(self, board_game, root):
         root.title("Checkers")
