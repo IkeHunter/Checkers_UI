@@ -14,14 +14,14 @@ import time
 - need to also set up rewards
 """
 
-games_to_play = 3
+games_to_play = 30
 
 with open('moves.json', 'w') as file:
     json.dump({}, file)
 
 for i in range(games_to_play):
     # Reset the env
-    print("\n\n\n\n{0} New Game {0}\n\n\n\n".format('*' * 20))
+    print("\n\n\n\n{0} Game {1} {0}\n\n\n\n".format('*' * 20, i))
 
     main_window = tk.Tk()
     board = cg.CheckerBoard(main_window)
@@ -30,14 +30,11 @@ for i in range(games_to_play):
     random_agent_1 = ag.RandomAgent(1, board, env)
     random_agent_2 = ag.RandomAgent(2, board, env)
 
-
     time.sleep(3)
     obs = env.reset()
     episode_rewards = 0
     done = False
     move_index = 0
-
-    board.print_board()
 
     while True:
         # env.render()
@@ -50,7 +47,7 @@ for i in range(games_to_play):
         obs, reward, done, info = env.step(action, random_agent_1.piece, i)
 
         move_index += 1
-        print("Move Index: {}, Game Index: {}".format(move_index, i))
+        # print("Move Index: {}, Game Index: {}".format(move_index, i))
 
         # status, agent_status = env.has_won()
         # print("status: {}, agent_status: {}".format(status, agent_status))
@@ -58,7 +55,7 @@ for i in range(games_to_play):
         # episode_rewards += reward
 
         if done:
-            print("\n\n DONE \n\n")
+            # print("\n\n DONE \n\n")
             time.sleep(2)
             break
 
@@ -66,10 +63,10 @@ for i in range(games_to_play):
             done = random_agent_2.random_turn()
 
             move_index += 1
-            print("Move Index: {}".format(move_index))
+            # print("Move Index: {}".format(move_index))
 
             if done:
-                print("\n\n DONE \n\n")
+                # print("\n\n DONE \n\n")
                 time.sleep(2)
                 break
 

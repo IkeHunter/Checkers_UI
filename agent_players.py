@@ -20,12 +20,12 @@ class AgentPlayer:
         piece_moves, king_moves = self.player.available_moves()
         available_moves = [piece_moves, king_moves]
         # print("\nAvailable Moves: {}\n".format(available_moves))
-        print("\n")
-        for i in range(len(available_moves)):
-            if i == 0:
-                print("({}) Pawns: {}".format(self.piece, available_moves[i]))
-            if i == 1:
-                print("({}) Kings: {}".format(self.piece, available_moves[i]))
+        # print("\n")
+        # for i in range(len(available_moves)):
+        #     if i == 0:
+        #         print("({}) Pawns: {}".format(self.piece, available_moves[i]))
+        #     if i == 1:
+        #         print("({}) Kings: {}".format(self.piece, available_moves[i]))
 
         if available_moves[0] and available_moves[1]:
             play_piece = random.randint(0, 1)

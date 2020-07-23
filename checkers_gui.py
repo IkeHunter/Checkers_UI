@@ -1,4 +1,5 @@
 import tkinter
+import time
 
 import checkers_game as cg
 
@@ -63,7 +64,7 @@ class CheckersUI:
 
         return root
 
-    def board_render(self, board_ui, frame, move_index, game_index, max_games):
+    def board_render(self, board_ui, frame, main_window, move_index, game_index, max_games):
         # board_ui = self.board_game
         board_grid = dict()
 
@@ -126,6 +127,15 @@ class CheckersUI:
             .grid(row=4, column=8, sticky='sew', padx=12, pady=1)
         move_index_int = tkinter.Label(frame, bg='white', text=move_index, font=int_opts) \
             .grid(row=5, column=8, sticky='new', padx=12, pady=1)
+
+        exit_btn = tkinter.Button(frame, text="Exit", fg='red', font=(None, 20),
+                                  command=lambda win=main_window, frm=frame: self.on_exit(win, frm))
+        exit_btn.grid(row=7, column=8, sticky='new', pady=5, padx=12)
+
+    @staticmethod
+    def on_exit(main_window, frame):
+        frame.destroy()
+        main_window.destroy()
 
 
     def board_render_verbose(self, frame, board_ui, jumped, kings, move_count):

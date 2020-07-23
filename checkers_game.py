@@ -34,7 +34,7 @@ class CheckerBoard:
         self.max_moves = 750
         self.main_window = main_window
         self.game_logic = CheckersLogic(self.current_board)
-        self.game_gui = gui.CheckersUI(self.main_window)
+        self.game_gui = gui.CheckersUI()
 
     def get_board(self):
         return self.current_board
@@ -289,7 +289,7 @@ class CheckersLogic:
         available_coords_all[3] = available_coords_three
         available_coords_all[4] = available_coords_four
 
-        print("Available 4: {}".format(available_coords_four))
+        # print("Available 4: {}".format(available_coords_four))
 
         return available_coords_all
 
@@ -420,7 +420,7 @@ class CheckersLogic:
             enemy_piece.append(1)
             enemy_piece.append(3)
 
-        print("({}) :: {}".format(number_piece, pieces))
+        # print("({}) :: {}".format(number_piece, pieces))
 
         for i in range(len(pieces.keys())):
             row_coord = pieces[i]['row']

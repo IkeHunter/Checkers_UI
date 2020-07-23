@@ -53,10 +53,10 @@ class CheckersBridge:
             else:
                 self.game_moves = [copy.deepcopy(self.game.current_board)]
 
-            print("\n")
-            for key in self.game.current_board.keys():
-                print(self.game.current_board[key])
-            print("\n")
+            # print("\n")
+            # for key in self.game.current_board.keys():
+            #     print(self.game.current_board[key])
+            # print("\n")
 
             self.write_move_file(self.game_moves, game_index)
 
