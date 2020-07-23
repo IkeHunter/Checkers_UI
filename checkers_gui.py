@@ -137,7 +137,6 @@ class CheckersUI:
         frame.destroy()
         main_window.destroy()
 
-
     def board_render_verbose(self, frame, board_ui, jumped, kings, move_count):
         # board_ui = self.board_game
         board_grid = dict()

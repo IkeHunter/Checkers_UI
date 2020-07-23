@@ -6,15 +6,14 @@ import checkers_gui as gui
 from scrollable_frame import VerticalScrolledFrame
 
 
-class InstantReplay:
+class GameReplay:
 
     def __init__(self):
         self.moves = None
-        # self.main_window = tk.Tk()
-        self.game_gui = gui.CheckersUI()
         self.move_index = 0
         self.game_index = '0'
         self.max_games = 0
+        self.interval = 500
 
     def _read_move_file(self):
 
@@ -34,15 +33,15 @@ class InstantReplay:
             print(self.moves[self.game_index][self.move_index][key])
         print("\n")
 
-    def _render_step(self, main_window, past_frame=None):
+    def _render_step(self, main_window, game_gui, past_frame=None):
 
         # self._render_terminal_version()
 
         frame = tk.Frame(main_window, bg='systemTransparent')
         frame.grid(row=0, column=0, sticky='nsew', columnspan=8, rowspan=8, padx=0)
-        frame = self.game_gui.config(self.moves[self.game_index][0], frame, False)
+        frame = game_gui.config(self.moves[self.game_index][0], frame, False)
 
-        self.game_gui.board_render(self.moves[self.game_index][self.move_index], frame, main_window, self.move_index, self.game_index, self.max_games)
+        game_gui.board_render(self.moves[self.game_index][self.move_index], frame, main_window, self.move_index, self.game_index, self.max_games)
 
         if past_frame:
             past_frame.grid_forget()
@@ -50,10 +49,12 @@ class InstantReplay:
         if self.move_index < len(self.moves[self.game_index]) - 1:
             self.move_index += 1
 
-            main_window.after(150, lambda win=main_window, frm=frame: self._render_step(win, frm))
+            main_window.after(self.interval, lambda win=main_window, frm=frame, g=game_gui:
+                              self._render_step(win, past_frame=frm, game_gui=g))
 
         else:
-            main_window.after(150, lambda win=main_window, frm=frame: self._render_step(win, frm))
+            main_window.after(self.interval, lambda win=main_window, frm=frame, g=game_gui:
+                              self._render_step(win, past_frame=frm, game_gui=g))
 
     def display_file_contents(self):
         for board in self.moves:
@@ -65,8 +66,9 @@ class InstantReplay:
     def render_game(self):
         main_window = tk.Tk()
 
-        self.game_gui.set_up(self.moves[self.game_index][0], main_window)
-        main_window.after(250, lambda win=main_window: self._render_step(win))
+        game_gui = gui.CheckersUI()
+        game_gui.set_up(self.moves[self.game_index][0], main_window)
+        main_window.after(0, lambda win=main_window, g=game_gui: self._render_step(win, game_gui=g))
         main_window.mainloop()
 
     @staticmethod
@@ -120,11 +122,12 @@ class InstantReplay:
         print("Game {} selected".format(game))
         # main_window.destroy()
         self.game_index = str(game)
+        self.move_index = 0
 
         self.render_game()
 
 
-replay = InstantReplay()
+replay = GameReplay()
 replay._read_move_file()
 # replay.render_game()
 replay.render_main_menu()
