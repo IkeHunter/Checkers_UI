@@ -1,30 +1,10 @@
 import tkinter
-import time
-
-import checkers_game as cg
 
 
 class CheckersUI:
 
-    def __init__(self):
-        # self.board_game = board
-        # self.jumped = jumped
-        # self.kings = kings
-        # self.move_count = move_count
-        # self.main_window = main_frame
-        # self.main_window = root_window
-        pass
-
-    def set_up(self, board_game, root):
-        root.title("Checkers")
-        root.geometry('1100x1100-80-100')
-        # frame.grid(sticky='nsew')
-        self.config(board_game, root, False)
-
-    # def main_loop(self):
-    #     self.main_window.after(2000, self.board_render)
-
-    def config(self, board_game, root, full):
+    @staticmethod
+    def config(board_game, root, full):
 
         if full:
             config_int = 8
@@ -35,37 +15,35 @@ class CheckersUI:
             board_obj = board_game
             for board_row in range(len(board_obj.keys())):
                 root.rowconfigure(board_row, weight=1)
-                # frame.rowconfigure(board_row, weight=1)
-
-                # print("range(len(board_obj[board_row] :: {} \nboard_row :: {} \nboard_obj[board_row] :: {}"
-                #       .format(len(board_obj[board_row]), board_row, board_obj[board_row]))
-
-                # print("range(len(board_obj[board_row] :: {} \nboard_row :: {} \nboard_obj[board_row] :: {}"
-                #       .format(404, board_row, board_obj[str(board_row)]))
 
                 for board_col in range(len(board_obj[board_row])):
                     root.columnconfigure(board_col, weight=1)
-                    # frame.columnconfigure(board_col, weight=1)
 
             root.columnconfigure(config_int, weight=1)
-            # frame.columnconfigure(8, weight=1)  # TODO: change col config to 7 for board_render() only
 
         except KeyError:
             board_obj = board_game
             for board_row in range(len(board_obj.keys())):
                 root.rowconfigure(int(board_row), weight=1)
-                # frame.rowconfigure(int(board_row), weight=1)
 
                 for board_col in range(len(board_obj[str(board_row)])):
                     root.columnconfigure(board_col, weight=1)
-                    # frame.columnconfigure(board_col, weight=1)
+
             root.columnconfigure(config_int, weight=1)
-            # frame.columnconfigure(8, weight=1)  # TODO: change col config to 7 for board_render() only
 
         return root
 
-    def board_render(self, board_ui, frame, main_window, move_index, game_index, max_games):
-        # board_ui = self.board_game
+    @staticmethod
+    def on_exit(main_window, frame):
+        frame.destroy()
+        main_window.destroy()
+
+    def set_up(self, board_game, root):
+        root.title("Checkers")
+        root.geometry('1100x1100-80-100')
+        self.config(board_game, root, False)
+
+    def board_replay_render(self, board_ui, frame, main_window, move_index, game_index, max_games):
         board_grid = dict()
 
         def add_box(grid, box_var, i):
@@ -118,27 +96,22 @@ class CheckersUI:
         game_index = "{}/{}".format(str(game_index), str(max_games))
         move_index = "{}".format(str(move_index))
 
-        game_index_label = tkinter.Label(frame, bg='white', text="Game Index", font=label_opts) \
-            .grid(row=2, column=8, sticky='sew', padx=12, pady=1)
-        game_index_int = tkinter.Label(frame, bg='white', text=game_index, font=int_opts) \
-            .grid(row=3, column=8, sticky='new', padx=12, pady=1)
+        game_index_label = tkinter.Label(frame, bg='white', text="Game Index", font=label_opts)
+        game_index_label.grid(row=2, column=8, sticky='sew', padx=12, pady=1)
+        game_index_int = tkinter.Label(frame, bg='white', text=game_index, font=int_opts)
+        game_index_int.grid(row=3, column=8, sticky='new', padx=12, pady=1)
 
-        move_index_label = tkinter.Label(frame, bg='white', text="Move Index", font=label_opts) \
-            .grid(row=4, column=8, sticky='sew', padx=12, pady=1)
-        move_index_int = tkinter.Label(frame, bg='white', text=move_index, font=int_opts) \
-            .grid(row=5, column=8, sticky='new', padx=12, pady=1)
+        move_index_label = tkinter.Label(frame, bg='white', text="Move Index", font=label_opts)
+        move_index_label.grid(row=4, column=8, sticky='sew', padx=12, pady=1)
+        move_index_int = tkinter.Label(frame, bg='white', text=move_index, font=int_opts)
+        move_index_int.grid(row=5, column=8, sticky='new', padx=12, pady=1)
 
         exit_btn = tkinter.Button(frame, text="Exit", fg='red', font=(None, 20),
                                   command=lambda win=main_window, frm=frame: self.on_exit(win, frm))
         exit_btn.grid(row=7, column=8, sticky='new', pady=5, padx=12)
 
     @staticmethod
-    def on_exit(main_window, frame):
-        frame.destroy()
-        main_window.destroy()
-
-    def board_render_verbose(self, frame, board_ui, jumped, kings, move_count):
-        # board_ui = self.board_game
+    def board_main_render(frame, board_ui, jumped, kings, move_count):
         board_grid = dict()
 
         def add_box(grid, box_var, i):
@@ -193,15 +166,19 @@ class CheckersUI:
         label_frame = tkinter.LabelFrame(frame, borderwidth=2, relief='solid')
         label_frame.grid(row=0, column=8, rowspan=8, sticky='nsew')
 
-        one_label = tkinter.Label(frame, bg='white', text=text_jumped_one, font=text_opts) \
-            .grid(row=1, column=8, sticky='nsew', padx=12, pady=1)
-        two_label = tkinter.Label(frame, bg='white', text=text_jumped_two, font=text_opts) \
-            .grid(row=5, column=8, sticky='nsew', padx=12, pady=1)
-        one_king = tkinter.Label(frame, bg='white', text=text_kings_one, font=text_opts) \
-            .grid(row=2, column=8, sticky='nsew', padx=12, pady=1)
-        two_king = tkinter.Label(frame, bg='white', text=text_kings_two, font=text_opts) \
-            .grid(row=6, column=8, sticky='nsew', padx=12, pady=1)
-        move_label = tkinter.Label(frame, bg='white', text=move_count, font=text_opts) \
-            .grid(row=3, column=8, sticky='nsew', padx=12, pady=1)
+        one_label = tkinter.Label(frame, bg='white', text=text_jumped_one, font=text_opts)
+        one_label.grid(row=1, column=8, sticky='nsew', padx=12, pady=1)
+
+        two_label = tkinter.Label(frame, bg='white', text=text_jumped_two, font=text_opts)
+        two_label.grid(row=5, column=8, sticky='nsew', padx=12, pady=1)
+
+        one_king = tkinter.Label(frame, bg='white', text=text_kings_one, font=text_opts)
+        one_king.grid(row=2, column=8, sticky='nsew', padx=12, pady=1)
+
+        two_king = tkinter.Label(frame, bg='white', text=text_kings_two, font=text_opts)
+        two_king.grid(row=6, column=8, sticky='nsew', padx=12, pady=1)
+
+        move_label = tkinter.Label(frame, bg='white', text=move_count, font=text_opts)
+        move_label.grid(row=3, column=8, sticky='nsew', padx=12, pady=1)
 
         board_grid.update({8: [one_label], 9: [two_label]})

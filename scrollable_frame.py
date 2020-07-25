@@ -16,7 +16,7 @@ class VerticalScrolledFrame(tk.Frame):
         vscrollbar = tk.Scrollbar(self, orient=tk.VERTICAL)
         vscrollbar.pack(fill=tk.BOTH, side=tk.RIGHT, expand=tk.FALSE)
         canvas = tk.Canvas(self, bd=0, highlightthickness=0,
-                        yscrollcommand=vscrollbar.set)
+                           yscrollcommand=vscrollbar.set)
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE)
         vscrollbar.config(command=canvas.yview)
 

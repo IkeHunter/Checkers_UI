@@ -1,19 +1,19 @@
-import checkers_game as cg
-import agent_players as ag
-import checkers_environment as ce
+from checkers_board import CheckersBoard
+from agent_players import *
+from checkers_environment import CheckersBridge
 
 import tkinter as tk
 
 
 def main():
     main_window = tk.Tk()
-    board = cg.CheckerBoard(main_window)
-    env = ce.CheckersBridge(board)
+    board = CheckersBoard(main_window)
+    env = CheckersBridge(board)
 
     board.set_up_board()
 
-    random_agent_1 = ag.OffensiveAgent(1, board, env)
-    random_agent_2 = ag.OffensiveAgent(2, board, env)
+    random_agent_1 = OffensiveAgent(1, board, env)
+    random_agent_2 = OffensiveAgent(2, board, env)
 
     def game_loop_1():
         frame = tk.Frame(main_window, bg='systemTransparent')
