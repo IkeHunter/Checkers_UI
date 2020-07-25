@@ -158,8 +158,9 @@ class CheckersBoard:
     def set_up_board(self):
         self.game_gui.set_up(self.current_board, self.main_window)
 
-    def render_board(self, frame):
-        self.game_gui.board_main_render(frame, self.current_board, self.jumped_pieces, self.king_pieces, self.move_count)
+    def render_board(self, frame, main_window):
+        self.game_gui.board_main_render(frame, main_window, self.current_board,
+                                        self.jumped_pieces, self.king_pieces, self.move_count)
 
     def get_moves(self, piece):
         if piece not in range(1, 5):

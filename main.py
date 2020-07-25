@@ -20,7 +20,7 @@ def main():
         frame.grid(row=0, column=0, sticky='nsew', columnspan=8, rowspan=8)
         frame = board.game_gui.config(board.current_board, frame, False)
 
-        board.render_board(frame)
+        board.render_board(frame, main_window)
         win = board.check_win()
 
         if not win > 0:
@@ -38,7 +38,7 @@ def main():
         frame.grid(row=0, column=0, sticky='nsew', columnspan=8, rowspan=8)
         frame = board.game_gui.config(board.current_board, frame, False)
 
-        board.render_board(frame)
+        board.render_board(frame, main_window)
         win = board.check_win()
 
         if not win > 0:

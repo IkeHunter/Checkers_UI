@@ -110,8 +110,7 @@ class CheckersUI:
                                   command=lambda win=main_window, frm=frame: self.on_exit(win, frm))
         exit_btn.grid(row=7, column=8, sticky='new', pady=5, padx=12)
 
-    @staticmethod
-    def board_main_render(frame, board_ui, jumped, kings, move_count):
+    def board_main_render(self, frame, main_window, board_ui, jumped, kings, move_count):
         board_grid = dict()
 
         def add_box(grid, box_var, i):
@@ -180,5 +179,9 @@ class CheckersUI:
 
         move_label = tkinter.Label(frame, bg='white', text=move_count, font=text_opts)
         move_label.grid(row=3, column=8, sticky='nsew', padx=12, pady=1)
+
+        quit_button = tkinter.Button(frame, text="Quit",
+                                     command=lambda win=main_window, frm=frame: self.on_exit(win, frm))
+        quit_button.grid(row=7, column=8, sticky='ew', padx=10)
 
         board_grid.update({8: [one_label], 9: [two_label]})

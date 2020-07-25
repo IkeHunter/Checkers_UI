@@ -104,7 +104,7 @@ class OffensiveAgent(AgentPlayer):
 
                 chosen_move = offensive_moves[move_index]
 
-            _, _, self.done, _ = self.env.step(chosen_move, self.piece)
+            _, _, self.done, _ = self.env.step(chosen_move)
 
             return self.done
         else:

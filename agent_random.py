@@ -26,15 +26,16 @@ for i in range(games_to_play):
     move_index = 0
 
     while True:
-        # env.render()
+        if i % 2 == 0:
+            env.record(i)
+
         action = random_agent_1.random_move()
 
-        obs, reward, done, info = env.step(action, i)
+        obs, reward, done, info = env.step(action)
 
         move_index += 1
 
         if done:
-            time.sleep(2)
             break
 
         if not done:
@@ -43,5 +44,4 @@ for i in range(games_to_play):
             move_index += 1
 
             if done:
-                time.sleep(2)
                 break

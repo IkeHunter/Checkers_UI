@@ -29,10 +29,13 @@ class CheckersBridge:
         self.game.reset_board()
         self.game.set_up_board()
 
-    def render(self):
-        self.game.render_board()
+    def record(self, game_index):
+        self.write_move_file(self.game_moves, game_index)
 
-    def step(self, move, game_index=0):
+        if len(self.game_moves) == 0:
+            print("Game {} recorded...".format(game_index))
+
+    def step(self, move):
         obs = None
         reward = None
         info = None
@@ -46,7 +49,7 @@ class CheckersBridge:
             else:
                 self.game_moves = [copy.deepcopy(self.game.current_board)]
 
-            self.write_move_file(self.game_moves, game_index)
+            # self.write_move_file(self.game_moves, game_index)
 
             done = self.has_won()
 
